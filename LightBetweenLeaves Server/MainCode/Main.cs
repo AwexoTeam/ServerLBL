@@ -12,9 +12,7 @@ public static class MainServer
 {
     public static Server server = new Server();
     public static Dictionary<int, string> guidIDs;
-
-    public static bool oof = true;
-
+    
     static void Main(string[] args)
     {
         StartServer();
@@ -24,34 +22,29 @@ public static class MainServer
         guidIDs = new Dictionary<int, string>();
         for (; ; )
         {
-            if (oof && server.Active)
-            {
-                Debug.LogWithTime(false, LogLevel.Verbose, "Hey");
-                Debug.LogWithBacktrack(false, LogLevel.Debug, "Oi");
-                Debug.LogWithBacktrack(true, LogLevel.Debug, "Error");
-
-                oof = false;
-            }
-
-            Telepathy.Message msg;
+            Message msg;
             while (server.GetNextMessage(out msg))
             {
                 switch (msg.eventType)
                 {
-                    case Telepathy.EventType.Connected:
+                    case EventType.Connected:
                         Console.WriteLine(msg.connectionId + " Connected");
 
                         break;
-                    case Telepathy.EventType.Data:
+                    case EventType.Data:
                         stream = new MemoryStream(msg.data);
                         reader = new BinaryReader(stream);
 
+                        
                         PacketType type = (PacketType)reader.ReadInt32();
+                        if(type != PacketType.PositionUpdate)
+                            Debug.LogWithTime(LogLevel.Debug, "=>" + type + " -" + msg.connectionId);
+
                         string gID = reader.ReadString();
 
                         MessageHandler.HandleMessage(type, gID, reader, msg);
                         break;
-                    case Telepathy.EventType.Disconnected:
+                    case EventType.Disconnected:
                         Console.WriteLine(msg.connectionId + " Disconnected");
                         
                         break;
@@ -67,6 +60,7 @@ public static class MainServer
 
     public static void Send(int sendTo, Packet packet)
     {
+        Debug.LogWithTime(LogLevel.Debug, "<=" + packet.type + " -" + sendTo);
         server.Send(sendTo, packet.buffer);
     }
 

@@ -50,16 +50,18 @@
   <ItemGroup>
     <Compile Include="Bling\Debug.cs" />
     <Compile Include="MainCode\Main.cs" />
-    <Compile Include="MainCode\MessageClass.cs" />
+    <Compile Include="MainCode\Packet.cs" />
     <Compile Include="MainCode\MessageHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Structure\DataTypeDefinations.cs" />
+    <Compile Include="Structure\PlayerHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Downloads\Mods\testy\telepathy\Telepathy\Telepathy.csproj">
-      <Project>{7fc9259b-1dfa-4fa0-8838-7e00c5553a3f}</Project>
+    <ProjectReference Include="..\..\..\..\Downloads\Mods\testy\telepathy\Telepathy\Telepathy.csproj">
+      <Project>{93683bc2-86b1-428f-a3ac-942d2e90f11e}</Project>
       <Name>Telepathy</Name>
     </ProjectReference>
   </ItemGroup>

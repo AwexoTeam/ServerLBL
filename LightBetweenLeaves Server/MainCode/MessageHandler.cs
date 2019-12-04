@@ -18,8 +18,11 @@ public static class MessageHandler
         {
             switch (type)
             {
-                case PacketType.MovementUpdate:
+                case PacketType.MovementRequest:
                     HandleMovementUpdate(reader);
+                    break;
+                case PacketType.PositionUpdate:
+                    HandlePositionUpdate(guid, reader);
                     break;
                 default:
                     break;
@@ -29,37 +32,23 @@ public static class MessageHandler
 
     public static void HandleLogin(BinaryReader reader, int connectionID)
     {
+        bool canLogin = !MainServer.guidIDs.ContainsKey(connectionID);
+        string uid = Guid.NewGuid().ToString();
+
         Packet packet = new Packet("SERVER", PacketType.LoginAnswer);
         packet.BeginWrite();
-
-        if (!MainServer.guidIDs.ContainsKey(connectionID))
-        {
-            packet.writer.Write(true);
-            string uid = Guid.NewGuid().ToString();
-            packet.writer.Write(uid);
-            MainServer.guidIDs.Add(connectionID, uid);
-
-            foreach (var item in MainServer.guidIDs)
-            {
-                Packet p = new Packet("SERVER", PacketType.PlayerConnected);
-                p.BeginWrite();
-                p.writer.Write(item.Value);
-                p.EndWrite();
-
-                if (item.Key != connectionID)
-                {
-                    MainServer.Send(connectionID, p);
-                }
-            }
-
-            HandleConnectedPlayer(uid, connectionID);
-        }
-        else { packet.writer.Write(false); }
+        packet.writer.Write(canLogin);
+        packet.writer.Write(uid);
         packet.EndWrite();
 
         MainServer.Send(connectionID, packet);
 
-        
+        if (canLogin)
+        {
+            MainServer.guidIDs.Add(connectionID, uid);
+            PlayerHandler.RegisterPlayer(uid);
+            MainServer.SendAll(PlayerHandler.GetAllPlayerPositions());
+        }
     }
 
     public static void HandleMovementUpdate(BinaryReader reader)
@@ -69,26 +58,7 @@ public static class MessageHandler
         float y = reader.ReadSingle();
         float z = reader.ReadSingle();
 
-        Packet packet = new Packet("SERVER", PacketType.MovementUpdate);
-        packet.BeginWrite();
-        packet.writer.Write(guid);
-        packet.writer.Write(x);
-        packet.writer.Write(y);
-        packet.writer.Write(z);
-        packet.EndWrite();
-
-        MainServer.SendAll(packet);
-    }
-
-    public static void HandleConnectedPlayer(string uid, int connectionID)
-    {
-        Packet playerConnected = new Packet("Server", PacketType.PlayerConnected);
-        playerConnected.BeginWrite();
-        playerConnected.writer.Write(uid);
-        playerConnected.EndWrite();
-
-        MainServer.SendAllExpect(connectionID, playerConnected);
-        
+        PlayerHandler.MovementRequest(guid, x, y, z);
     }
 
     public static void HandleDisconnectedPlayer(string uid, int connectionID)
@@ -99,5 +69,14 @@ public static class MessageHandler
         playerConnected.EndWrite();
 
         MainServer.SendAllExpect(connectionID, playerConnected);
+    }
+
+    public static void HandlePositionUpdate(string guid, BinaryReader reader)
+    {
+        float x = reader.ReadSingle();
+        float y = reader.ReadSingle();
+        float z = reader.ReadSingle();
+
+        PlayerHandler.UpdatePosition(guid, x, y, z);
     }
 }

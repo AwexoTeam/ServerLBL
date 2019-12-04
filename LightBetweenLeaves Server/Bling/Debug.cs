@@ -24,7 +24,7 @@ public static class Debug
         Console.WriteLine(text);
     }
 
-    public static void Log(bool isError = false, LogLevel logLevel, string text, bool includeParentesis=true)
+    public static void Log(LogLevel logLevel, string text, bool includeParentesis=true, bool isError = false)
     {
         if(logLevel >= level)
         {
@@ -43,17 +43,17 @@ public static class Debug
         }
     }
 
-    public static void LogWithTime(bool isError, LogLevel logLevel, string text)
+    public static void LogWithTime(LogLevel logLevel, string text, bool isError = false)
     {
         DateTime currTime = DateTime.Now;
         string paretnesis = '[' + currTime.ToString("T") + "]: ";
         Console.ForegroundColor = GetColor(logLevel);
         Console.Write(paretnesis);
 
-        Log(isError, logLevel, text, false);
+        Log(logLevel, text, false, isError);
     }
 
-    public static void LogWithBacktrack(bool isError, LogLevel logLevel, string text)
+    public static void LogWithBacktrack(LogLevel logLevel, string text, bool isError = false)
     {
         MethodBase mth = new StackTrace().GetFrame(1).GetMethod();
         
@@ -61,7 +61,7 @@ public static class Debug
         Console.ForegroundColor = GetColor(logLevel);
 
         Console.Write(parentesis);
-        Log(isError, logLevel, text, false);
+        Log(logLevel, text, false, isError);
     }
 
     private static ConsoleColor GetColor(LogLevel logLevel)
