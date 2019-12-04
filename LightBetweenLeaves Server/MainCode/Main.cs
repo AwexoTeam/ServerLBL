@@ -46,7 +46,19 @@ public static class MainServer
                         break;
                     case EventType.Disconnected:
                         Console.WriteLine(msg.connectionId + " Disconnected");
-                        
+                        int id = msg.connectionId;
+                        string guid = guidIDs[id];
+
+                        guidIDs.Remove(id);
+                        Player disconnectedPlayer = PlayerHandler.players.Find(p => p.guid == guid);
+                        PlayerHandler.players.Remove(disconnectedPlayer);
+
+                        Packet disconnection = new Packet("SERVER", PacketType.PlayerDisconnected);
+                        disconnection.BeginWrite();
+                        disconnection.writer.Write(guid);
+                        disconnection.EndWrite();
+
+                        SendAll(disconnection);
                         break;
                 }
             }
