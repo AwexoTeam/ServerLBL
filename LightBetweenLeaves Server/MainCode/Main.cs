@@ -1,4 +1,5 @@
 ﻿
+using CharacterStructures;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Telepathy;
-using ZeroFormatter;
 
 public static class MainServer
 {
@@ -18,7 +18,12 @@ public static class MainServer
         StartServer();
         MemoryStream stream = new MemoryStream();
         BinaryReader reader = new BinaryReader(stream);
-        
+
+        Database.Initialize();
+        Account a = new Account();
+        a.Initialize(2);
+        Debug.Log(a.name);
+
         guidIDs = new Dictionary<int, string>();
         for (; ; )
         {
@@ -28,13 +33,11 @@ public static class MainServer
                 switch (msg.eventType)
                 {
                     case EventType.Connected:
-                        Console.WriteLine(msg.connectionId + " Connected");
-
+                        
                         break;
                     case EventType.Data:
                         stream = new MemoryStream(msg.data);
                         reader = new BinaryReader(stream);
-
                         
                         PacketType type = (PacketType)reader.ReadInt32();
                         if(type != PacketType.PositionUpdate)

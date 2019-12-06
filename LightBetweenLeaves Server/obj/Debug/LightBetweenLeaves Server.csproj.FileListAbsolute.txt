@@ -212,7 +212,18 @@ C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\S
 C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\System.Xml.XPath.dll
 C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\System.Xml.XPath.XDocument.dll
 C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\Telepathy.dll
-C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\ZeroFormatter.dll
-C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\ZeroFormatter.Interfaces.dll
 C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\Telepathy.pdb
 C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\obj\Debug\LightBetweenLeaves Server.csproj.CopyComplete
+C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\EntityFramework.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\System.Data.SQLite.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\System.Data.SQLite.EF6.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\System.Data.SQLite.Linq.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\EntityFramework.xml
+C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\System.Data.SQLite.xml
+C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\System.Data.SQLite.dll.config
+C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\MySql.Data.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\ZeroFormatter.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\ZeroFormatter.Interfaces.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\MySql.Data.xml
