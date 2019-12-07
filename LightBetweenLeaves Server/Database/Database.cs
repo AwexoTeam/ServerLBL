@@ -48,10 +48,10 @@ public static class Database
         foreach (var table in tables)
         {
             string cmdStr = table.GetCreateCmd();
-            
+            File.WriteAllText("cmd.txt",cmdStr);
+
             using (MySqlCommand cmd = new MySqlCommand(cmdStr, connection))
             {
-
                 cmd.ExecuteNonQuery();
             }
 

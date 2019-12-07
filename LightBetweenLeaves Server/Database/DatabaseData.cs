@@ -16,6 +16,11 @@ namespace DatabaseData
 
     public abstract class DatabaseTable
     {
+        [PRIMARY_KEY]
+        [AUTO_INCREMENT]
+        [NOT_NULL]
+        public int id { get; set; }
+
         public virtual string GetCreateCmd()
         {
             string cmd = "";
@@ -101,7 +106,6 @@ namespace DatabaseData
 
             Database.insertIntoCMD.Add(GetType(), cmd);
         }
-
         public virtual void RegisterUpdateCMD()
         {
             string cmd = "";
@@ -145,16 +149,23 @@ namespace DatabaseData
         public abstract void Initialize(int id);
         public abstract void Update();
         public abstract void Insert();
+        
+        public MySqlDataReader reader;
 
-        public MySqlDataReader GetReader(string cmdStr)
+        public void StartReader() { StartReader("SELECT * FROM `" + GetType().Name + "` WHERE id = " + id); }
+        public void StartReader(string cmdStr)
         {
             using (MySqlCommand cmd = new MySqlCommand())
             {
                 cmd.Connection = Database.connection;
                 cmd.CommandText = cmdStr;
                 
-                return cmd.ExecuteReader();
+                reader = cmd.ExecuteReader();
             }
+        }
+        public void EndReader()
+        {
+            reader.Close();
         }
 
         private string GetTypeString(PropertyInfo property)
@@ -162,6 +173,7 @@ namespace DatabaseData
             if (property.PropertyType == typeof(int)) { return "INT"; }
             if (property.PropertyType == typeof(float)) { return "FLOAT"; }
             if (property.PropertyType == typeof(string)) { return "TEXT"; }
+            if (property.PropertyType == typeof(bool)) { return "BOOLEAN"; }
 
             else { return ""; }
         }

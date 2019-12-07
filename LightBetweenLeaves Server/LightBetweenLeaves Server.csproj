@@ -71,7 +71,7 @@
     <Compile Include="Bling\Debug.cs" />
     <Compile Include="Database\CharacterStructures.cs" />
     <Compile Include="Database\Database.cs" />
-    <Compile Include="Database\DatabaseAttributes.cs" />
+    <Compile Include="Database\DatabaseData.cs" />
     <Compile Include="MainCode\Main.cs" />
     <Compile Include="MainCode\Packet.cs" />
     <Compile Include="MainCode\MessageHandler.cs" />

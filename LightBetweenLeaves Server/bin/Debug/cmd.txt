@@ -1,1 +1,8 @@
-SELECT * FROM `Account` WHERE id = 2
+CREATE TABLE IF NOT EXISTS PetEntry(
+ownerID INT 
+,name TEXT 
+,level INT 
+,exp INT 
+,age INT 
+,id INT PRIMARY KEY AUTO_INCREMENT NOT NULL 
+);
