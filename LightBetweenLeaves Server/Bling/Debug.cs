@@ -17,18 +17,17 @@ public enum LogLevel
 
 public static class Debug
 {
-    public static LogLevel level = LogLevel.Debug;
+    public static LogLevel level = LogLevel.Minimal;
 
     public static void Log(string text)
     {
-        Console.WriteLine(text);
+        Log(LogLevel.Minimal, text, true);
     }
 
     public static void Log(LogLevel logLevel, string text, bool includeParentesis=true, bool isError = false)
     {
-        if(logLevel >= level)
+        if(logLevel <= level)
         {
-            
             string write = "";
             if (includeParentesis)
             {
@@ -38,30 +37,35 @@ public static class Debug
             }
             
             Console.ForegroundColor = isError ? ConsoleColor.Red : ConsoleColor.Gray; 
-            Console.Write(text);
-            Console.Write(Environment.NewLine);
+            Console.WriteLine(text);
         }
     }
 
     public static void LogWithTime(LogLevel logLevel, string text, bool isError = false)
     {
-        DateTime currTime = DateTime.Now;
-        string paretnesis = '[' + currTime.ToString("T") + "]: ";
-        Console.ForegroundColor = GetColor(logLevel);
-        Console.Write(paretnesis);
+        if (logLevel <= level)
+        {
+            DateTime currTime = DateTime.Now;
+            string paretnesis = '[' + currTime.ToString("T") + "]: ";
+            Console.ForegroundColor = GetColor(logLevel);
+            Console.Write(paretnesis);
 
-        Log(logLevel, text, false, isError);
+            Log(logLevel, text, false, isError);
+        }
     }
 
     public static void LogWithBacktrack(LogLevel logLevel, string text, bool isError = false)
     {
-        MethodBase mth = new StackTrace().GetFrame(1).GetMethod();
-        
-        string parentesis = '[' + mth.ReflectedType.Name + "." + mth.Name + "()]: ";
-        Console.ForegroundColor = GetColor(logLevel);
+        if (logLevel <= level)
+        {
+            MethodBase mth = new StackTrace().GetFrame(1).GetMethod();
 
-        Console.Write(parentesis);
-        Log(logLevel, text, false, isError);
+            string parentesis = '[' + mth.ReflectedType.Name + "." + mth.Name + "()]: ";
+            Console.ForegroundColor = GetColor(logLevel);
+
+            Console.Write(parentesis);
+            Log(logLevel, text, false, isError);
+        }
     }
 
     private static ConsoleColor GetColor(LogLevel logLevel)

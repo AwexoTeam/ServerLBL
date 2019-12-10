@@ -116,28 +116,32 @@ namespace DatabaseData
 
             int cnt = 0;
 
-            PropertyInfo[] properties = GetType().GetProperties();
-            for (int i = 0; i < properties.Length; i++)
+            List<PropertyInfo> properties = new List<PropertyInfo>();
+            properties.AddRange(GetType().GetProperties());
+
+            primaryKey = properties.Find(p => p.IsDefined(typeof(PRIMARY_KEY))).Name;
+
+            properties.RemoveAll(p => p.IsDefined(typeof(PRIMARY_KEY)));
+            properties.RemoveAll(p => p.IsDefined(typeof(AUTO_INCREMENT)));
+            properties.RemoveAll(p => p.IsDefined(typeof(IGNORE)));
+            properties.RemoveAll(p => p.IsDefined(typeof(DONT_UPDATE)));
+
+            for (int i = 0; i < properties.Count; i++)
             {
                 PropertyInfo p = properties[i];
-                if (p.IsDefined(typeof(PRIMARY_KEY))) { primaryKey = p.Name; }
-                else if (p.IsDefined(typeof(AUTO_INCREMENT))) { }
-                else if (p.IsDefined(typeof(DONT_UPDATE))) { }
+
+                cnt++;
+                cmd += p.Name + " = ";
+
+                if (p.PropertyType == typeof(string))
+                {
+                    cmd += "'{" + cnt + "}'";
+                }
                 else
                 {
-                    cnt++;
-                    cmd += p.Name + " = ";
-
-                    if (p.PropertyType == typeof(string))
-                    {
-                        cmd += "'{" + cnt + "}'";
-                    }
-                    else
-                    {
-                        cmd += "{" + cnt + "}";
-                    }
-                    if (i < properties.Length - 1) { cmd += ","; }
+                    cmd += "{" + cnt + "}";
                 }
+                if (i < properties.Count - 1) { cmd += ","; }
             }
 
             cmd += " WHERE\n ";
@@ -147,12 +151,16 @@ namespace DatabaseData
         }
 
         public abstract void Initialize(int id);
-        public abstract void Update();
+        public abstract void Update(int packetID);
         public abstract void Insert();
         
         public MySqlDataReader reader;
 
-        public void StartReader() { StartReader("SELECT * FROM `" + GetType().Name + "` WHERE id = " + id); }
+        public void StartReader(int _id)
+        {
+            id = _id;
+            StartReader("SELECT * FROM `" + GetType().Name + "` WHERE id = " + id);
+        }
         public void StartReader(string cmdStr)
         {
             using (MySqlCommand cmd = new MySqlCommand())

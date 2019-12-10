@@ -150,13 +150,14 @@ public static class Database
             string storedCmd = updateCMD[table.GetType()];
             string cmdStr = string.Format(storedCmd, values);
 
+            File.WriteAllText("cmd.txt", cmdStr);
             using (MySqlCommand cmd = new MySqlCommand(cmdStr))
             {
                 cmd.Connection = connection;
                 cmd.ExecuteNonQuery();
             }
         }
-        else { Debug.Log("Could not find update to"); }
+        else { Debug.Log("Could not find update cmd"); }
     }
 
 

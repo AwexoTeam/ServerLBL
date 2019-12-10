@@ -1,4 +1,5 @@
 ﻿
+using CharacterStructures;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -39,11 +40,29 @@ public static class MessageHandler
         request.Deserialize(reader);
 
         CharacterCreationAnswer answer = new CharacterCreationAnswer();
-
-        if (Database.DoesCharacterNameExist(request.baseInfo.name))
+        
+        if (!Database.DoesCharacterNameExist(request.name))
         {
             answer.canCreate = true;
             answer.errorCode = 0;
+
+            Account acc = new Account();
+            acc.Initialize(MainServer.connectionToAccountID[msg.connectionId]);
+            acc.name = request.name;
+
+            acc.Update(MainServer.connectionToAccountID[msg.connectionId]);
+
+            UmaData umaData = new UmaData()
+            {
+                ownerID = MainServer.connectionToAccountID[msg.connectionId],
+                pronouns = request.pronouns,
+                bodyType = request.bodyType,
+
+                height = request.height,
+                weight = request.weight
+            };
+
+            umaData.Insert();
         }
         else
         {
@@ -54,7 +73,7 @@ public static class MessageHandler
 
             //TODO: check if height and such are good! Config.
         }
-
+        
         answer.Serialize();
         answer.Send(msg.connectionId);
     }

@@ -7,16 +7,20 @@ using System.Threading.Tasks;
 
 public class CharacterCreationRequest : Packet
 {
-    public UmaCharacterPacket baseInfo;
+    public string name;
+    public string pronouns;
+    public int bodyType;
 
-    public CharacterCreationRequest() { type = PacketType.CharacterCreationRequest; }
-
+    public float height;
+    public float weight;
+    
     public override void Serialize() { }
     public override void Deserialize(BinaryReader reader)
     {
-        UmaCharacterPacket packet = new UmaCharacterPacket("", "", 0);
-        packet.Deserialize(reader);
-
-        baseInfo = packet;
+        name = reader.ReadString();
+        pronouns = reader.ReadString();
+        bodyType = reader.ReadInt32();
+        height = reader.ReadSingle();
+        weight = reader.ReadSingle();
     }
 }

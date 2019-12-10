@@ -45,11 +45,9 @@ namespace CharacterStructures
 
         public override void Initialize(int id)
         {
-            StartReader();
+            StartReader(id);
             while (reader.Read())
             {
-                this.id = (int)reader["id"];
-
                 this.name = (string)reader["name"];
                 this.username = (string)reader["username"];
                 this.password = (string)reader["password"];
@@ -108,12 +106,12 @@ namespace CharacterStructures
                 rebirthAmount
            );
         }
-        public override void Update()
+        public override void Update(int packetID)
         {
             Database.Update
            (
                 this,
-                id,
+                packetID,
                 name,
                 username,
                 password,
@@ -184,11 +182,9 @@ namespace CharacterStructures
 
         public override void Initialize(int id)
         {
-            StartReader();
+            StartReader(id);
             while (reader.Read())
             {
-                this.id = (int)reader["id"];
-
                 this.ownerID = (int)reader["ownerID"];
                 this.itemID = (int)reader["itemID"];
                 this.storageID = (int)reader["storageID"];
@@ -259,7 +255,7 @@ namespace CharacterStructures
                 chainCast
            );
         }
-        public override void Update()
+        public override void Update(int packetID)
         {
             Database.Update
            (
@@ -312,10 +308,9 @@ namespace CharacterStructures
 
         public override void Initialize(int id)
         {
-            StartReader();
+            StartReader(id);
             while (reader.Read())
             {
-                this.id = (int)reader["id"];
                 this.sceneID = (int)reader["sceneID"];
                 this.itemEntryID = (int)reader["itemEntryID"];
 
@@ -330,7 +325,7 @@ namespace CharacterStructures
         {
             Database.Update(this, sceneID, itemEntryID, x, y, z);
         }
-        public override void Update()
+        public override void Update(int packetID)
         {
             Database.Update(this, id, sceneID, itemEntryID, x, y, z);
         }
@@ -357,10 +352,9 @@ namespace CharacterStructures
 
         public override void Initialize(int id)
         {
-            StartReader();
+            StartReader(id);
             while (reader.Read())
             {
-                this.id = (int)reader["id"];
                 this.ownerID = (int)reader["ownerID"];
                 this.skillID = (int)reader["skillID"];
 
@@ -404,7 +398,7 @@ namespace CharacterStructures
             );
         }
 
-        public override void Update()
+        public override void Update(int packetID)
         {
             Database.Update
             (
@@ -437,7 +431,7 @@ namespace CharacterStructures
 
         public override void Initialize(int id)
         {
-            StartReader();
+            StartReader(id);
             while (reader.Read())
             {
                 this.id = (int)reader["id"];
@@ -453,7 +447,7 @@ namespace CharacterStructures
             throw new NotImplementedException();
         }
 
-        public override void Update()
+        public override void Update(int packetID)
         {
             throw new NotImplementedException();
         }
@@ -469,7 +463,7 @@ namespace CharacterStructures
 
         public override void Initialize(int id)
         {
-            StartReader();
+            StartReader(id);
             while (reader.Read())
             {
                 this.ownerID = (int)reader["ownerID"];
@@ -486,9 +480,43 @@ namespace CharacterStructures
         {
             Database.Insert(this, ownerID, name, level, exp, age);
         }
-        public override void Update()
+        public override void Update(int packetID)
         {
             Database.Update(this, id, ownerID, name, level, exp, age);
+        }
+    }
+
+    public class UmaData : DatabaseTable
+    {
+        public int ownerID { get; set; }
+        public int bodyType { get; set; }
+        public string pronouns { get; set; }
+
+        public float height { get; set; }
+        public float weight { get; set; }
+
+        public override void Initialize(int id)
+        {
+            StartReader(id);
+            while (reader.Read())
+            {
+                ownerID = (int)reader["ownerID"];
+                height = (float)reader["height"];
+                weight = (float)reader["weight"];
+                bodyType = (int)reader["bodyType"];
+                pronouns = (string)reader["pronouns"];
+            }
+            EndReader();
+        }
+
+        public override void Insert()
+        {
+            Database.Insert(this, ownerID, bodyType, pronouns, height, weight);
+        }
+
+        public override void Update(int packetID)
+        {
+            Database.Update(this, id, ownerID, bodyType, pronouns, height, weight);
         }
     }
 }
