@@ -9,20 +9,23 @@ using Telepathy;
 
 public static class MessageHandler
 {
-    public static void HandleMessage(PacketType type, string guid, BinaryReader reader, Message msg)
+    public static void HandleMessage(PacketType type, int id, BinaryReader reader, Message msg)
     {
-        if(type == PacketType.LoginRequest) { HandleLogin(reader, msg.connectionId); }
-
-        string realGUID = MainServer.guidIDs[msg.connectionId];
-        if (realGUID == guid)
+        if (type == PacketType.LoginRequest){ LoginRequest(msg.connectionId, reader); }
+        else
         {
             switch (type)
             {
-                case PacketType.MovementRequest:
-                    HandleMovementUpdate(reader);
+                case PacketType.Unknown:
                     break;
-                case PacketType.PositionUpdate:
-                    HandlePositionUpdate(guid, reader);
+                case PacketType.CharacterCreationRequest:
+                    RequestCharacterCreation(reader, msg);
+                    break;
+                case PacketType.MovementRequest:
+                    break;
+                case PacketType.PlayerSyncRequest:
+                    break;
+                case PacketType.PlayerDisconnected:
                     break;
                 default:
                     break;
@@ -30,53 +33,38 @@ public static class MessageHandler
         }
     }
 
-    public static void HandleLogin(BinaryReader reader, int connectionID)
+    private static void RequestCharacterCreation(BinaryReader reader, Message msg)
     {
-        bool canLogin = !MainServer.guidIDs.ContainsKey(connectionID);
-        string uid = Guid.NewGuid().ToString();
+        CharacterCreationRequest request = new CharacterCreationRequest();
+        request.Deserialize(reader);
 
-        Packet packet = new Packet("SERVER", PacketType.LoginAnswer);
-        packet.BeginWrite();
-        packet.writer.Write(canLogin);
-        packet.writer.Write(uid);
-        packet.EndWrite();
+        CharacterCreationAnswer answer = new CharacterCreationAnswer();
 
-        MainServer.Send(connectionID, packet);
-
-        if (canLogin)
+        if (Database.DoesCharacterNameExist(request.baseInfo.name))
         {
-            MainServer.guidIDs.Add(connectionID, uid);
-            PlayerHandler.RegisterPlayer(uid);
-            MainServer.SendAll(PlayerHandler.GetAllPlayerPositions());
+            answer.canCreate = true;
+            answer.errorCode = 0;
         }
+        else
+        {
+            answer.canCreate = false;
+
+            //Character name taken
+            answer.errorCode = 1;
+
+            //TODO: check if height and such are good! Config.
+        }
+
+        answer.Serialize();
+        answer.Send(msg.connectionId);
     }
 
-    public static void HandleMovementUpdate(BinaryReader reader)
+    public static void LoginRequest(int connectionID, BinaryReader reader)
     {
-        string guid = reader.ReadString();
-        float x = reader.ReadSingle();
-        float y = reader.ReadSingle();
-        float z = reader.ReadSingle();
+        LoginRequest request = new LoginRequest();
+        request.Deserialize(reader);
 
-        PlayerHandler.MovementRequest(guid, x, y, z);
+        Database.DoLoginCheck(connectionID, request);
     }
 
-    public static void HandleDisconnectedPlayer(string uid, int connectionID)
-    {
-        Packet playerConnected = new Packet("Server", PacketType.PlayerDisconnected);
-        playerConnected.BeginWrite();
-        playerConnected.writer.Write(uid);
-        playerConnected.EndWrite();
-
-        MainServer.SendAllExpect(connectionID, playerConnected);
-    }
-
-    public static void HandlePositionUpdate(string guid, BinaryReader reader)
-    {
-        float x = reader.ReadSingle();
-        float y = reader.ReadSingle();
-        float z = reader.ReadSingle();
-
-        PlayerHandler.UpdatePosition(guid, x, y, z);
-    }
 }

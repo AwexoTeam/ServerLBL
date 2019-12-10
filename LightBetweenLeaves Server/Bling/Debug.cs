@@ -17,7 +17,7 @@ public enum LogLevel
 
 public static class Debug
 {
-    public static LogLevel level;
+    public static LogLevel level = LogLevel.Debug;
 
     public static void Log(string text)
     {

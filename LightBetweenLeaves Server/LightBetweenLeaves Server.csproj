@@ -77,6 +77,11 @@
     <Compile Include="MainCode\MessageHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structure\DataTypeDefinations.cs" />
+    <Compile Include="Structure\Packets\CharacterCreationAnswer.cs" />
+    <Compile Include="Structure\Packets\CharacterCreationRequest.cs" />
+    <Compile Include="Structure\Packets\LoginAnswer.cs" />
+    <Compile Include="Structure\Packets\LoginRequest.cs" />
+    <Compile Include="Structure\Packets\UmaCharacterPacket.cs" />
     <Compile Include="Structure\PlayerHandler.cs" />
   </ItemGroup>
   <ItemGroup>

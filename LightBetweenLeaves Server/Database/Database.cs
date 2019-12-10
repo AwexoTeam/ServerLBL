@@ -1,4 +1,5 @@
-﻿using DatabaseData;
+﻿using CharacterStructures;
+using DatabaseData;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -16,14 +17,14 @@ public static class Database
     private static string database;
     private static string username;
     private static string password;
-
+    
     public static Dictionary<Type, string> updateCMD;
     public static Dictionary<Type, string> insertIntoCMD;
     
     public static void Initialize()
     {
-        updateCMD  = new Dictionary<Type, string>();
-        insertIntoCMD  = new Dictionary<Type, string>();
+        updateCMD = new Dictionary<Type, string>();
+        insertIntoCMD = new Dictionary<Type, string>();
 
         server = "remotemysql.com";
         username = "xwula2yOZ5";
@@ -37,18 +38,18 @@ public static class Database
         conStr += "PASSWORD=" + password + ";";
 
         connection = new MySqlConnection(conStr);
-        
+
         OpenConnection();
 
         var tables = typeof(DatabaseTable)
             .Assembly.GetTypes()
             .Where(t => t.IsSubclassOf(typeof(DatabaseTable)) && !t.IsAbstract)
             .Select(t => (DatabaseTable)Activator.CreateInstance(t));
-        
+
         foreach (var table in tables)
         {
             string cmdStr = table.GetCreateCmd();
-            File.WriteAllText("cmd.txt",cmdStr);
+            File.WriteAllText("cmd.txt", cmdStr);
 
             using (MySqlCommand cmd = new MySqlCommand(cmdStr, connection))
             {
@@ -59,6 +60,18 @@ public static class Database
             table.RegisterUpdateCMD();
         }
 
+    }
+
+    public static bool DoesCharacterNameExist(string name)
+    {
+        string cmdStr = "SELECT * FROM `Account` WHERE name = '" + name+ "'";
+        using(MySqlCommand cmd = new MySqlCommand(cmdStr, connection))
+        {
+            using(MySqlDataReader reader = cmd.ExecuteReader())
+            {
+                return reader.HasRows;
+            }
+        }
     }
 
     private static bool OpenConnection()
@@ -101,11 +114,11 @@ public static class Database
             throw;
         }
     }
-    
+
     private static IEnumerable<T> GetEnumerableOfType<T>(params object[] constructorArgs) where T : class, IComparable<T>
     {
         List<T> objects = new List<T>();
-        foreach (Type type in 
+        foreach (Type type in
             Assembly.GetAssembly(typeof(T)).GetTypes()
             .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(T))))
         {
@@ -120,12 +133,11 @@ public static class Database
         if (insertIntoCMD.ContainsKey(table.GetType()))
         {
             string storedCmd = insertIntoCMD[table.GetType()];
-            
+
             string cmdStr = string.Format(storedCmd, values);
 
-            using (MySqlCommand cmd = new MySqlCommand(cmdStr))
+            using (MySqlCommand cmd = new MySqlCommand(cmdStr, connection))
             {
-                cmd.Connection = connection;
                 cmd.ExecuteNonQuery();
             }
         }
@@ -137,7 +149,7 @@ public static class Database
         {
             string storedCmd = updateCMD[table.GetType()];
             string cmdStr = string.Format(storedCmd, values);
-            
+
             using (MySqlCommand cmd = new MySqlCommand(cmdStr))
             {
                 cmd.Connection = connection;
@@ -146,5 +158,77 @@ public static class Database
         }
         else { Debug.Log("Could not find update to"); }
     }
-}
 
+
+    public enum LoginErrorCode
+    {
+        Successful,
+        WrongPassword,
+        UsernameTaken,
+        InvalidName,
+        Unknown,
+    }
+
+    public static void DoLoginCheck(int connectionId, LoginRequest request)
+    {
+        bool hasCharacter = false;
+        bool canLogin = false;
+        LoginErrorCode errorCode = LoginErrorCode.Unknown;
+        int characterID = -1;
+
+        string cmdStr = "SELECT * FROM `Account` WHERE username = '" + request.username + "'";
+        using (MySqlCommand cmd = new MySqlCommand(cmdStr, connection))
+        {
+            using (MySqlDataReader reader = cmd.ExecuteReader())
+            {
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        canLogin = (string)reader["password"] == request.password;
+                        if (canLogin)
+                        {
+                            characterID = (int)reader["id"];
+                            errorCode = LoginErrorCode.Successful;
+                            string name = (string)reader["name"];
+                            hasCharacter = name != string.Empty;
+                        }
+                        else { errorCode = LoginErrorCode.WrongPassword; }
+                    }
+                }
+            }
+        }
+        
+        if (!canLogin && errorCode != LoginErrorCode.WrongPassword)
+        {
+            Account account = new Account()
+            {
+                username = request.username,
+                password = request.password,
+            };
+
+            account.Insert();
+        }
+
+        if (canLogin)
+        {
+            if (!MainServer.connectionToAccountID.ContainsKey(connectionId))
+            {
+                MainServer.connectionToAccountID.Add(connectionId, characterID);
+            }
+        }
+            
+
+        LoginAnswer answer = new LoginAnswer()
+        {
+            id = connectionId,
+            canLogin = canLogin,
+            hasCharacter = hasCharacter,
+            errorCode = (int)errorCode,
+            characterID = characterID
+        };
+
+        answer.Serialize();
+        answer.Send(connectionId);
+    }
+}

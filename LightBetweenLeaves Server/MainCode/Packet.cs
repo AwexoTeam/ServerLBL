@@ -10,25 +10,22 @@ public enum PacketType
     Unknown,
     LoginRequest,
     LoginAnswer,
+    CharacterCreationRequest,
+    CharacterCreationAnswer,
     MovementRequest,
     PositionUpdate,
     PlayerSyncRequest,
     PlayerDisconnected,
+    UmaCharacterPacket,
 }
 
-public class Packet
+public abstract class Packet
 {
-    public string guid;
+    public int id = -1;
     public PacketType type;
     public byte[] buffer;
     public BinaryWriter writer;
-
-    public Packet(string _guid, PacketType _type)
-    {
-        guid = _guid;
-        type = _type;
-    }
-
+    
     private MemoryStream stream;
 
     public void BeginWrite()
@@ -37,7 +34,7 @@ public class Packet
         writer = new BinaryWriter(stream);
 
         writer.Write((int)type);
-        writer.Write(guid);
+        writer.Write(id);
     }
     public void EndWrite()
     {
@@ -45,4 +42,19 @@ public class Packet
         stream.Close();
     }
 
+    public abstract void Serialize();
+    public abstract void Deserialize(BinaryReader reader);
+
+    public void Send(int id)
+    {
+        MainServer.Send(id, this);
+    }
+    public void SendAll()
+    {
+        MainServer.SendAll(this);
+    }
+    public void SendAllExcept(int id)
+    {
+        MainServer.SendAllExpect(id, this);
+    }
 }

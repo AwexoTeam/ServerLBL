@@ -11,20 +11,18 @@ using Telepathy;
 public static class MainServer
 {
     public static Server server = new Server();
-    public static Dictionary<int, string> guidIDs;
-    
+    public static Dictionary<int, int> connectionToAccountID;
+
     static void Main(string[] args)
     {
         StartServer();
         MemoryStream stream = new MemoryStream();
         BinaryReader reader = new BinaryReader(stream);
 
-        Database.Initialize();
-        Account a = new Account();
-        a.Initialize(2);
-        Debug.Log(a.name);
+        connectionToAccountID = new Dictionary<int, int>();
 
-        guidIDs = new Dictionary<int, string>();
+        Database.Initialize();
+        
         for (; ; )
         {
             Message msg;
@@ -41,27 +39,15 @@ public static class MainServer
                         
                         PacketType type = (PacketType)reader.ReadInt32();
                         if(type != PacketType.PositionUpdate)
-                            Debug.LogWithTime(LogLevel.Debug, "=>" + type + " -" + msg.connectionId);
+                            Debug.LogWithTime(LogLevel.Debug, "=>" + type + ", ID:" + msg.connectionId);
 
-                        string gID = reader.ReadString();
-
-                        MessageHandler.HandleMessage(type, gID, reader, msg);
+                        int id = reader.ReadInt32();
+                        
+                        MessageHandler.HandleMessage(type, id, reader, msg);
                         break;
                     case EventType.Disconnected:
                         Console.WriteLine(msg.connectionId + " Disconnected");
-                        int id = msg.connectionId;
-                        string guid = guidIDs[id];
-
-                        guidIDs.Remove(id);
-                        Player disconnectedPlayer = PlayerHandler.players.Find(p => p.guid == guid);
-                        PlayerHandler.players.Remove(disconnectedPlayer);
-
-                        Packet disconnection = new Packet("SERVER", PacketType.PlayerDisconnected);
-                        disconnection.BeginWrite();
-                        disconnection.writer.Write(guid);
-                        disconnection.EndWrite();
-
-                        SendAll(disconnection);
+                        
                         break;
                 }
             }
@@ -75,24 +61,24 @@ public static class MainServer
 
     public static void Send(int sendTo, Packet packet)
     {
-        Debug.LogWithTime(LogLevel.Debug, "<=" + packet.type + " -" + sendTo);
+        Debug.LogWithTime(LogLevel.Debug, "<=" + packet.type + " ID:" + sendTo);
         server.Send(sendTo, packet.buffer);
     }
 
     public static void SendAll(Packet packet)
     {
-        foreach (var guidIDPair in guidIDs)
+        foreach (var ids in connectionToAccountID)
         {
-            Send(guidIDPair.Key, packet);
+            Send(ids.Value, packet);
         }
     }
 
     public static void SendAllExpect(int avoid, Packet packet)
     {
-        foreach (var guidIDPair in guidIDs)
-        {
-            if(guidIDPair.Key != avoid)
-                Send(guidIDPair.Key, packet);
-        }
+            foreach (var ids in connectionToAccountID)
+            {
+                if (ids.Value != avoid)
+                    Send(ids.Value, packet);
+            }
     }
 }
