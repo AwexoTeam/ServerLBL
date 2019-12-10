@@ -193,6 +193,9 @@ public static class Database
                             errorCode = LoginErrorCode.Successful;
                             string name = (string)reader["name"];
                             hasCharacter = name != string.Empty;
+
+                            EventArgs args = new EventArgs(GameEventType.OnPlayerLogin, hasCharacter);
+                            EventHandler.InvokeEvent(args);
                         }
                         else { errorCode = LoginErrorCode.WrongPassword; }
                     }

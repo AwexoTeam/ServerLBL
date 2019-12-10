@@ -1,5 +1,5 @@
 ﻿using DatabaseData;
-using DataTypeDefinations;
+using GameDefinations;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -444,12 +444,12 @@ namespace CharacterStructures
 
         public override void Insert()
         {
-            throw new NotImplementedException();
+            Database.Insert(this, ownerID, questID, taskAmount);
         }
 
         public override void Update(int packetID)
         {
-            throw new NotImplementedException();
+            Database.Update(this, id, ownerID, questID, taskAmount);
         }
     }
 
