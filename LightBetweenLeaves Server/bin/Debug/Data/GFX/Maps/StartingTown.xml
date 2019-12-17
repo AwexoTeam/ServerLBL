@@ -1,0 +1,9 @@
+<Map>
+	<SceneID></SceneID>
+	<MapName></MapName>
+	<DisplayName></DisplayName>
+	<Heightmap></Heightmap>
+	<Objects>
+		<Prefab id=1 x=10 y=10 rx=0 ry=0 rz=0>
+	</Objects>
+</Map>

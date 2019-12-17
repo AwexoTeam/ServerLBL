@@ -10,26 +10,26 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-public static class Database
+public static class Database 
 {
     public static MySqlConnection connection;
-    private static string server;
-    private static string database;
-    private static string username;
-    private static string password;
+    public static string server;
+    public static string database;
+    public static string username;
+    public static string password;
     
     public static Dictionary<Type, string> updateCMD;
     public static Dictionary<Type, string> insertIntoCMD;
     
-    public static void Initialize()
+    public static bool Initialize()
     {
         updateCMD = new Dictionary<Type, string>();
         insertIntoCMD = new Dictionary<Type, string>();
 
-        server = "remotemysql.com";
-        username = "xwula2yOZ5";
-        password = "Xh8SPcoG1K";
-        database = "xwula2yOZ5";
+        //server = "remotemysql.com";
+        //username = "xwula2yOZ5";
+        //password = "Xh8SPcoG1K";
+        //database = "xwula2yOZ5";
 
         string conStr = "";
         conStr += "SERVER=" + server + ";";
@@ -39,7 +39,7 @@ public static class Database
 
         connection = new MySqlConnection(conStr);
 
-        OpenConnection();
+        bool rtn = OpenConnection();
 
         var tables = typeof(DatabaseTable)
             .Assembly.GetTypes()
@@ -60,6 +60,7 @@ public static class Database
             table.RegisterUpdateCMD();
         }
 
+        return rtn;
     }
 
     public static bool DoesCharacterNameExist(string name)
@@ -134,6 +135,7 @@ public static class Database
         {
             string storedCmd = insertIntoCMD[table.GetType()];
 
+            File.WriteAllText("cmd.txt", storedCmd + "\n" + values.Length);
             string cmdStr = string.Format(storedCmd, values);
 
             using (MySqlCommand cmd = new MySqlCommand(cmdStr, connection))
@@ -160,7 +162,6 @@ public static class Database
         else { Debug.Log("Could not find update cmd"); }
     }
 
-
     public enum LoginErrorCode
     {
         Successful,
@@ -170,7 +171,7 @@ public static class Database
         Unknown,
     }
 
-    public static void DoLoginCheck(int connectionId, LoginRequest request)
+    public static bool DoLoginCheck(int connectionId, LoginRequest request)
     {
         bool hasCharacter = false;
         bool canLogin = false;
@@ -218,11 +219,12 @@ public static class Database
         {
             if (!MainServer.connectionToAccountID.ContainsKey(connectionId))
             {
+                Debug.Log("testy");
                 MainServer.connectionToAccountID.Add(connectionId, characterID);
             }
+            else { MainServer.connectionToAccountID[connectionId] = characterID; }
         }
-            
-
+        
         LoginAnswer answer = new LoginAnswer()
         {
             id = connectionId,
@@ -234,5 +236,22 @@ public static class Database
 
         answer.Serialize();
         answer.Send(connectionId);
+
+        return canLogin;
+    }
+
+    public static void ExecuteNonQuerry(string cmdStr)
+    {
+        using (MySqlCommand cmd = new MySqlCommand(cmdStr, connection))
+        {
+            cmd.ExecuteNonQuery();
+        }
+    }
+    public static MySqlDataReader ExecuteReader(string cmdStr)
+    {
+        using (MySqlCommand cmd = new MySqlCommand(cmdStr, connection))
+        {
+            return cmd.ExecuteReader();
+        }
     }
 }

@@ -17,7 +17,7 @@ public enum LogLevel
 
 public static class Debug
 {
-    public static LogLevel level = LogLevel.Minimal;
+    public static LogLevel level = LogLevel.Debug;
 
     public static void Log(string text)
     {
@@ -26,6 +26,9 @@ public static class Debug
 
     public static void Log(LogLevel logLevel, string text, bool includeParentesis=true, bool isError = false)
     {
+        if (isError)
+            logLevel = LogLevel.Minimal;
+
         if(logLevel <= level)
         {
             string write = "";
@@ -75,7 +78,7 @@ public static class Debug
         switch (logLevel)
         {
             case LogLevel.Minimal:
-                rtn = ConsoleColor.Gray;
+                rtn = ConsoleColor.White;
                 break;
             case LogLevel.Default:
                 rtn = ConsoleColor.White;
@@ -92,5 +95,19 @@ public static class Debug
         }
 
         return rtn;
+    }
+
+    public static void TelepathyLog(string str)
+    {
+        LogWithTime(LogLevel.Minimal, str);
+    }
+
+    public static void TelepathyLogWarning(string str)
+    {
+        LogWithTime(LogLevel.Verbose, str);
+    }
+    public static void TelepathyError(string str)
+    {
+        LogWithTime(LogLevel.Minimal, str, true);
     }
 }

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Telepathy;
-
+    
 public static class MessageHandler
 {
     public static void HandleMessage(PacketType type, int id, BinaryReader reader, Message msg)
@@ -83,7 +83,14 @@ public static class MessageHandler
         LoginRequest request = new LoginRequest();
         request.Deserialize(reader);
 
-        Database.DoLoginCheck(connectionID, request);
-    }
+        bool canLogin = Database.DoLoginCheck(connectionID, request);
 
+        if (canLogin)
+        {
+            EventArgs args = new EventArgs(GameEventType.OnPlayerLogin);
+            args.argInt = connectionID;
+
+            EventHandler.InvokeEvent(GameEventType.OnPlayerLogin, args);
+        }
+    }
 }

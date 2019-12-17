@@ -27,7 +27,8 @@ namespace CharacterStructures
         public float z { get; set; }
 
         public int totalLevel { get; set; }
-        public int xp { get; set; }
+        public int level { get; set; }
+        public float exp { get; set; }
         public bool alive { get; set; }
         public int coin { get; set; }
 
@@ -39,6 +40,12 @@ namespace CharacterStructures
         public float hunger { get; set; }
         public float exhaustion { get; set; }
 
+        public int strength { get; set; }
+        public int intellegence { get; set; }
+        public int dexterity { get; set; }
+        public int willpower { get; set; }
+        public int luck { get; set; }
+        
         public string lastRebirth { get; set; }
         public int rebirthAge { get; set; }
         public int rebirthAmount { get; set; }
@@ -59,7 +66,8 @@ namespace CharacterStructures
                 this.z = (float)reader["z"];
 
                 this.totalLevel = (int)reader["totalLevel"];
-                this.xp = (int)reader["xp"];
+                this.level = (int)reader["level"];
+                this.exp = (float)reader["exp"];
                 this.alive = (bool)reader["alive"];
                 this.coin = (int)reader["coin"];
                 
@@ -71,6 +79,12 @@ namespace CharacterStructures
                 this.hunger = (float)reader["hunger"];
                 this.exhaustion = (float)reader["exhaustion"];
 
+                this.strength = (int)reader["strength"];
+                this.intellegence = (int)reader["intellegence"];
+                this.dexterity = (int)reader["dexterity"];
+                this.willpower = (int)reader["willpower"];
+                this.luck = (int)reader["luck"];
+                
                 this.lastRebirth = (string)reader["lastRebirth"];
                 this.rebirthAge = (int)reader["rebirthAge"];
                 this.rebirthAmount = (int)reader["rebirthAmount"];
@@ -92,7 +106,8 @@ namespace CharacterStructures
                 y,
                 z,
                 totalLevel,
-                xp,
+                level,
+                exp,
                 alive,
                 coin,
                 hp,
@@ -101,17 +116,22 @@ namespace CharacterStructures
                 wound,
                 hunger,
                 exhaustion,
+                strength,
+                intellegence,
+                dexterity,
+                willpower,
+                luck,
                 lastRebirth,
                 rebirthAge,
                 rebirthAmount
            );
         }
-        public override void Update(int packetID)
+        public override void Update(int accountID)
         {
             Database.Update
            (
                 this,
-                packetID,
+                accountID,
                 name,
                 username,
                 password,
@@ -121,7 +141,8 @@ namespace CharacterStructures
                 y,
                 z,
                 totalLevel,
-                xp,
+                level,
+                exp,
                 alive,
                 coin,
                 hp,
@@ -130,11 +151,17 @@ namespace CharacterStructures
                 wound,
                 hunger,
                 exhaustion,
+                strength,
+                intellegence,
+                dexterity,
+                willpower,
+                luck,
                 lastRebirth,
                 rebirthAge,
                 rebirthAmount
            );
         }
+        
     }
 
     public class ItemEntry : DatabaseTable

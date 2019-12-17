@@ -1,0 +1,30 @@
+<ServerData>
+	<!--Database Start-->
+	<Server>remotemysql.com</Server>
+	<Username>xwula2yOZ5</Username>
+	<Password>Xh8SPcoG1K</Password>
+	<Database>xwula2yOZ5</Database>
+	<!--Database End-->
+	
+	<Port>1337</Port>
+	<MaxPlayers>-1</MaxPlayers>
+	<ChatFilter>false</ChatFilter>
+	<NameFilter>false</NameFilter>
+	<AgeRequirment>-1</AgeRequirment>
+	
+	<GameTick>250</GameTick>
+	<ServerTick>150</ServerTick>
+	<LateTickDelay>600</LateTickDelay>
+	<!--Multipliers Start-->
+	<AP>1</AP>
+	<DROP>1</DROP>
+	<GOLD_DROP>1</GOLD_DROP>
+		
+	<QUEST_EXP>1</QUEST_EXP>
+	<MONSTER_EXP>1</MONSTER_EXP>
+	<PRODUCTION_EXP>1</PRODUCTION_EXP>
+	<SKILL_EXP>1</SKILL_EXP>
+	<!--Multipliers End-->
+	
+	
+</ServerData>

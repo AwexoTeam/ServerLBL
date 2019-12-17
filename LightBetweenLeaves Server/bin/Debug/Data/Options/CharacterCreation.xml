@@ -1,0 +1,10 @@
+<CharacterCreation>
+	<Options>
+		<NameLength>16</NameLength>
+		<CustomPronouns>true</CustomPronouns>
+		<ProfanityFilter>true</ProfanityFilter>
+	</Options>
+
+	<Slider sliderType="height" min="0.3" max ="1">
+	<Slider sliderType="weight" min="0.3" max ="1">
+</CharacterCreation>

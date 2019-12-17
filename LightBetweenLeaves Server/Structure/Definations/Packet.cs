@@ -57,4 +57,13 @@ public abstract class Packet
     {
         MainServer.SendAllExpect(id, this);
     }
+
+    public void SendToPlayer(int accountID)
+    {
+        if (MainServer.connectionToAccountID.ContainsValue(accountID))
+        {
+            int id = MainServer.connectionToAccountID.FirstOrDefault(x => x.Value == accountID).Key;
+            Send(id);
+        }
+    }
 }

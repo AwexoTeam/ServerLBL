@@ -1,8 +1,8 @@
-CREATE TABLE IF NOT EXISTS PetEntry(
+CREATE TABLE IF NOT EXISTS UmaData(
 ownerID INT 
-,name TEXT 
-,level INT 
-,exp INT 
-,age INT 
+,bodyType INT 
+,pronouns TEXT 
+,height FLOAT 
+,weight FLOAT 
 ,id INT PRIMARY KEY AUTO_INCREMENT NOT NULL 
 );

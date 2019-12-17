@@ -6,23 +6,32 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using Telepathy;
 
 public static class MainServer
 {
     public static Server server = new Server();
     public static Dictionary<int, int> connectionToAccountID;
-
+    
     static void Main(string[] args)
     {
+        Telepathy.Logger.Log = Debug.TelepathyLog;
+        Telepathy.Logger.LogWarning = Debug.TelepathyLogWarning;
+        Telepathy.Logger.LogError = Debug.TelepathyError;
+
+        XmlInitializer.Initialize();
+
         StartServer();
         MemoryStream stream = new MemoryStream();
         BinaryReader reader = new BinaryReader(stream);
 
         connectionToAccountID = new Dictionary<int, int>();
-
-        Database.Initialize();
         
+        Database.Initialize();
+        TickHandler.Initialize();
+        PlayerHandler.Initialize();
+
         for (; ; )
         {
             Message msg;
@@ -56,7 +65,7 @@ public static class MainServer
 
     static void StartServer()
     {
-        server.Start(1337);
+        server.Start(ServerData.port);
     }
 
     public static void Send(int sendTo, Packet packet)

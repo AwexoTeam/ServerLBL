@@ -68,22 +68,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bling\Debug.cs" />
-    <Compile Include="Database\CharacterStructures.cs" />
-    <Compile Include="Database\Database.cs" />
-    <Compile Include="Database\DatabaseData.cs" />
-    <Compile Include="Database\GameStructures.cs" />
-    <Compile Include="MainCode\Main.cs" />
-    <Compile Include="MainCode\Packet.cs" />
-    <Compile Include="MainCode\MessageHandler.cs" />
+    <Compile Include="XMLHandlers\ItemDatabase.cs" />
+    <Compile Include="XMLHandlers\ServerData.cs" />
+    <Compile Include="XMLHandlers\XmlInitializer.cs" />
+    <Compile Include="Utils\Debug.cs" />
+    <Compile Include="MainCode\Database\CharacterStructures.cs" />
+    <Compile Include="MainCode\Database\Database.cs" />
+    <Compile Include="MainCode\Database\DatabaseData.cs" />
+    <Compile Include="MainCode\Database\GameStructures.cs" />
+    <Compile Include="MainCode\MainServer.cs" />
+    <Compile Include="Structure\Definations\Packet.cs" />
+    <Compile Include="Structure\Handlers\MessageHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Structure\EventHandler.cs" />
-    <Compile Include="Structure\GameDefinations.cs" />
-    <Compile Include="Structure\Packets\CharacterCreationAnswer.cs" />
-    <Compile Include="Structure\Packets\CharacterCreationRequest.cs" />
-    <Compile Include="Structure\Packets\LoginAnswer.cs" />
-    <Compile Include="Structure\Packets\LoginRequest.cs" />
-    <Compile Include="Structure\Packets\UmaCharacterPacket.cs" />
+    <Compile Include="Structure\Definations\Player.cs" />
+    <Compile Include="Structure\Handlers\EventHandler.cs" />
+    <Compile Include="Structure\Definations\GameDefinations.cs" />
+    <Compile Include="Structure\Packets\Login\CharacterCreationAnswer.cs" />
+    <Compile Include="Structure\Packets\Login\CharacterCreationRequest.cs" />
+    <Compile Include="Structure\Packets\Login\LoginAnswer.cs" />
+    <Compile Include="Structure\Packets\Login\LoginRequest.cs" />
+    <Compile Include="Structure\Packets\Ingame\MovementRequest.cs" />
+    <Compile Include="Structure\Packets\Ingame\PositionUpdate.cs" />
+    <Compile Include="Structure\Packets\Ingame\StatUpdatePacket.cs" />
+    <Compile Include="Structure\Packets\Ingame\UmaCharacterPacket.cs" />
+    <Compile Include="Structure\Handlers\PlayerHandler.cs" />
+    <Compile Include="Structure\Handlers\TickHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Downloads\Mods\testy\telepathy\Telepathy\Telepathy.csproj">
@@ -94,6 +103,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Structure\Definations\Items\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
