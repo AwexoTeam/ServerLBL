@@ -151,7 +151,7 @@ namespace DatabaseData
         }
 
         public abstract void Initialize(int id);
-        public abstract void Update(int packetID);
+        public abstract void Update(int id);
         public abstract void Insert();
         
         public MySqlDataReader reader;

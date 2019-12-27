@@ -15,26 +15,32 @@ public static class Database
     public static Dictionary<Type, string> updateCMD;
     public static Dictionary<Type, string> insertIntoCMD;
     
+    //Initialize all the database stuff.
     public static bool Initialize(string server, string database, string username,string password)
     {
         updateCMD = new Dictionary<Type, string>();
         insertIntoCMD = new Dictionary<Type, string>();
 
+        //Generating the connection string.
         string conStr = "";
         conStr += "SERVER=" + server + ";";
         conStr += "DATABASE=" + database + ";";
         conStr += "UID=" + username + ";";
         conStr += "PASSWORD=" + password + ";";
 
+        //try to do a connection.
         connection = new MySqlConnection(conStr);
 
+        //Will return if its successful or not.
         bool rtn = OpenConnection();
 
+        //Get all classes that isnt abstract that implements the "DatabaseTable"
         var tables = typeof(DatabaseTable)
             .Assembly.GetTypes()
             .Where(t => t.IsSubclassOf(typeof(DatabaseTable)) && !t.IsAbstract)
             .Select(t => (DatabaseTable)Activator.CreateInstance(t));
 
+        //Create those tables by the command defined.
         foreach (var table in tables)
         {
             string cmdStr = table.GetCreateCmd();
@@ -44,6 +50,7 @@ public static class Database
                 cmd.ExecuteNonQuery();
             }
 
+            //Register their insert and update commands.
             table.RegisterInsertCMD();
             table.RegisterUpdateCMD();
         }
@@ -92,6 +99,7 @@ public static class Database
         }
     }
 
+    //Helper function to make my job easier. Taken off stackoverflow. This is magic.
     private static IEnumerable<T> GetEnumerableOfType<T>(params object[] constructorArgs) where T : class, IComparable<T>
     {
         List<T> objects = new List<T>();
@@ -105,6 +113,7 @@ public static class Database
         return objects;
     }
 
+    //Insert into database based of the table reference.
     public static void Insert(DatabaseTable table, params object[] values)
     {
         if (insertIntoCMD.ContainsKey(table.GetType()))
@@ -120,6 +129,7 @@ public static class Database
         }
     }
 
+    //Update the database based of the table reference.
     public static void Update(DatabaseTable table, params object[] values)
     {
         if (updateCMD.ContainsKey(table.GetType()))
@@ -136,6 +146,7 @@ public static class Database
         else { Debug.Log("Could not find update cmd"); }
     }
     
+    //Execute command on mysql.
     public static void ExecuteNonQuerry(string cmdStr)
     {
         using (MySqlCommand cmd = new MySqlCommand(cmdStr, connection))
