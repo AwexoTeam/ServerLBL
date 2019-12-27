@@ -24,10 +24,10 @@ public class LoginRequest : Packet
     {
         //TODO: reimplement character check logic.
         
-        LoginAnswer answer = Database.DoLoginCheck(msg.connectionId, username, password);
+        LoginAnswer answer = DatabaseHandler.DoLoginCheck(msg.connectionId, username, password);
         MainServer.connectionToAccountID.Add(msg.connectionId, answer.characterID);
 
         answer.Serialize();
-        answer.Send(msg.connectionId);
+        MainServer.Send(msg.connectionId, answer);;
     }
 }

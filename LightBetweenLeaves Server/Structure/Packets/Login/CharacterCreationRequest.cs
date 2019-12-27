@@ -62,6 +62,6 @@ public class CharacterCreationRequest : Packet
         data.Insert();
         
         answer.Serialize();
-        answer.Send(msg.connectionId);
+        MainServer.Send(msg.connectionId, answer);
     }
 }

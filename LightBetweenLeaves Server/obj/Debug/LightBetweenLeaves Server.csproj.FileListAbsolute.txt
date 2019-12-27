@@ -227,3 +227,7 @@ C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\M
 C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\ZeroFormatter.dll
 C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\ZeroFormatter.Interfaces.dll
 C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\MySql.Data.xml
+C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\SharedData.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\DatabaseServer.pdb
+C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\SharedData.pdb
+C:\Users\Melon\Documents\LBLMain\ServerLBL\LightBetweenLeaves Server\bin\Debug\DatabaseServer.dll

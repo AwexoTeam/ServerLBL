@@ -72,7 +72,7 @@ public static class PlayerHandler
 
 
             movementUpdate.Serialize();
-            movementUpdate.SendAll();
+            MainServer.SendAll(movementUpdate);
         }
     }
 

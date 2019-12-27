@@ -33,10 +33,10 @@ public static class ServerData
             {
                 XElement serverData = (XElement)XElement.ReadFrom(reader);
 
-                Database.server = (string)serverData.Element("Server");
-                Database.username = (string)serverData.Element("Username");
-                Database.password = (string)serverData.Element("Password");
-                Database.database = (string)serverData.Element("Database");
+                DatabaseHandler.server = (string)serverData.Element("Server");
+                DatabaseHandler.username = (string)serverData.Element("Username");
+                DatabaseHandler.password = (string)serverData.Element("Password");
+                DatabaseHandler.database = (string)serverData.Element("Database");
 
                 TickHandler.GameTickInterval = (int)serverData.Element("GameTick");
                 TickHandler.ServerTickInterval = (int)serverData.Element("ServerTick");

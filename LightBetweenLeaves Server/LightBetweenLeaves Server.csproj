@@ -68,6 +68,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Structure\Handlers\DatabaseHandler.cs" />
     <Compile Include="Structure\Packets\Ingame\PlayerMovementRequest.cs" />
     <Compile Include="Structure\Packets\Ingame\PlayerMovementUpdate.cs" />
     <Compile Include="Structure\Packets\Ingame\PlayerSyncAnswer.cs" />
@@ -77,13 +78,7 @@
     <Compile Include="XMLHandlers\ItemDatabase.cs" />
     <Compile Include="XMLHandlers\ServerData.cs" />
     <Compile Include="XMLHandlers\XmlInitializer.cs" />
-    <Compile Include="Utils\Debug.cs" />
-    <Compile Include="MainCode\Database\CharacterStructures.cs" />
-    <Compile Include="MainCode\Database\Database.cs" />
-    <Compile Include="MainCode\Database\DatabaseData.cs" />
-    <Compile Include="MainCode\Database\GameStructures.cs" />
     <Compile Include="MainCode\MainServer.cs" />
-    <Compile Include="Structure\Definations\Packet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structure\Definations\Player.cs" />
     <Compile Include="Structure\Handlers\EventHandler.cs" />
@@ -97,6 +92,14 @@
     <ProjectReference Include="..\..\..\..\Downloads\Mods\testy\telepathy\Telepathy\Telepathy.csproj">
       <Project>{93683bc2-86b1-428f-a3ac-942d2e90f11e}</Project>
       <Name>Telepathy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatabaseServer\DatabaseServer.csproj">
+      <Project>{62883850-63e3-45a4-9a2b-75022ed74ecd}</Project>
+      <Name>DatabaseServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharedData\SharedData.csproj">
+      <Project>{280ba373-6bf2-4a44-aba9-9c8e60fcc11f}</Project>
+      <Name>SharedData</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

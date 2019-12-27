@@ -48,7 +48,7 @@ public class PlayerSyncRequest : Packet
             };
 
             playerSync.Serialize();
-            playerSync.Send(msg.connectionId);
+            MainServer.Send(msg.connectionId, playerSync);
         }
     }
 }

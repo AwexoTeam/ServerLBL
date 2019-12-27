@@ -1,0 +1,14 @@
+C:\Users\Melon\Documents\LBLMain\ServerLBL\DatabaseServer\bin\Debug\DatabaseServer.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\DatabaseServer\bin\Debug\DatabaseServer.pdb
+C:\Users\Melon\Documents\LBLMain\ServerLBL\DatabaseServer\bin\Debug\MySql.Data.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\DatabaseServer\bin\Debug\SharedData.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\DatabaseServer\bin\Debug\SharedData.pdb
+C:\Users\Melon\Documents\LBLMain\ServerLBL\DatabaseServer\bin\Debug\MySql.Data.xml
+C:\Users\Melon\Documents\LBLMain\ServerLBL\DatabaseServer\obj\Debug\DatabaseServer.csprojAssemblyReference.cache
+C:\Users\Melon\Documents\LBLMain\ServerLBL\DatabaseServer\obj\Debug\DatabaseServer.csproj.CoreCompileInputs.cache
+C:\Users\Melon\Documents\LBLMain\ServerLBL\DatabaseServer\obj\Debug\DatabaseServer.csproj.CopyComplete
+C:\Users\Melon\Documents\LBLMain\ServerLBL\DatabaseServer\obj\Debug\DatabaseServer.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\DatabaseServer\obj\Debug\DatabaseServer.pdb
+C:\Users\Melon\Documents\LBLMain\ServerLBL\DatabaseServer\bin\Debug\Telepathy.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\DatabaseServer\bin\Debug\netstandard.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\DatabaseServer\bin\Debug\Telepathy.pdb

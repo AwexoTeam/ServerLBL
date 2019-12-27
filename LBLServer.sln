@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightBetweenLeaves Server",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telepathy", "..\..\..\Downloads\Mods\testy\telepathy\Telepathy\Telepathy.csproj", "{93683BC2-86B1-428F-A3AC-942D2E90F11E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedData", "SharedData\SharedData.csproj", "{280BA373-6BF2-4A44-ABA9-9C8E60FCC11F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseServer", "DatabaseServer\DatabaseServer.csproj", "{62883850-63E3-45A4-9A2B-75022ED74ECD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{93683BC2-86B1-428F-A3AC-942D2E90F11E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93683BC2-86B1-428F-A3AC-942D2E90F11E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93683BC2-86B1-428F-A3AC-942D2E90F11E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{280BA373-6BF2-4A44-ABA9-9C8E60FCC11F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{280BA373-6BF2-4A44-ABA9-9C8E60FCC11F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{280BA373-6BF2-4A44-ABA9-9C8E60FCC11F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{280BA373-6BF2-4A44-ABA9-9C8E60FCC11F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62883850-63E3-45A4-9A2B-75022ED74ECD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62883850-63E3-45A4-9A2B-75022ED74ECD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62883850-63E3-45A4-9A2B-75022ED74ECD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62883850-63E3-45A4-9A2B-75022ED74ECD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

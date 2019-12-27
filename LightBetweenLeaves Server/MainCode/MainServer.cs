@@ -27,8 +27,8 @@ public static class MainServer
         BinaryReader reader = new BinaryReader(stream);
 
         connectionToAccountID = new Dictionary<int, int>();
-        
-        Database.Initialize();
+
+        DatabaseHandler.Initialize();
         TickHandler.Initialize();
         PlayerHandler.Initialize();
 
