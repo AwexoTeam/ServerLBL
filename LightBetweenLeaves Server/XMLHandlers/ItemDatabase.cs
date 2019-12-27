@@ -17,19 +17,6 @@ public static class ItemDatabase
         itemDatabase = new List<ItemData>();
         
         XmlReader reader = XmlReader.Create("Data/DB/ItemDB.xml");
-
-        while (!reader.EOF)
-        {
-            if (reader.Name != "ItemDB") { reader.ReadToFollowing("ItemDB"); }
-            if (!reader.EOF)
-            {
-                XElement itemDatabase = (XElement)XElement.ReadFrom(reader);
-                Console.Write(itemDatabase.Attribute("id") + ", ");
-                Console.Write(itemDatabase.Attribute("name") + ", ");
-                Console.Write(itemDatabase.Attribute("description") + ", ");
-                Console.Write(itemDatabase.Attribute("usableID") + ", ");
-                Console.Write("\n");
-            }
-        }
+        
     }
 }

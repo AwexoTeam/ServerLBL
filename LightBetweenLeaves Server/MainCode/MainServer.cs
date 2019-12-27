@@ -47,15 +47,40 @@ public static class MainServer
                         reader = new BinaryReader(stream);
                         
                         PacketType type = (PacketType)reader.ReadInt32();
-                        if(type != PacketType.PositionUpdate)
-                            Debug.LogWithTime(LogLevel.Debug, "=>" + type + ", ID:" + msg.connectionId);
-
                         int id = reader.ReadInt32();
-                        
-                        MessageHandler.HandleMessage(type, id, reader, msg);
+
+                        Packet packet = new Packet();
+
+                        switch (type)
+                        {
+                            case PacketType.LoginRequest:
+                                packet = new LoginRequest();
+                                break;
+
+                            case PacketType.CharacterCreationRequest:
+                                packet = new CharacterCreationRequest();
+                                break;
+
+                            case PacketType.PlayerSyncRequest:
+                                packet = new PlayerSyncRequest();
+                                break;
+
+                            case PacketType.PlayerMovementRequest:
+                                packet = new PlayerMovementRequest();
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        packet.Deserialize(reader);
+                        packet.OnRecieve(msg);
+
+                        if(type != PacketType.PlayerMovementRequest)
+                            Debug.LogWithTime(LogLevel.Debug, "R: " + type + ", ID:" + msg.connectionId);
+
                         break;
                     case EventType.Disconnected:
-                        Console.WriteLine(msg.connectionId + " Disconnected");
                         
                         break;
                 }
@@ -70,7 +95,11 @@ public static class MainServer
 
     public static void Send(int sendTo, Packet packet)
     {
-        Debug.LogWithTime(LogLevel.Debug, "<=" + packet.type + " ID:" + sendTo);
+        if (packet.type != PacketType.PlayerMovementUpdate)
+        {
+            Debug.LogWithTime(LogLevel.Debug, "S: " + packet.type + " ID:" + sendTo);
+        }
+
         server.Send(sendTo, packet.buffer);
     }
 
@@ -78,7 +107,7 @@ public static class MainServer
     {
         foreach (var ids in connectionToAccountID)
         {
-            Send(ids.Value, packet);
+            Send(ids.Key, packet);
         }
     }
 
@@ -89,5 +118,10 @@ public static class MainServer
                 if (ids.Value != avoid)
                     Send(ids.Value, packet);
             }
+    }
+
+    public static int GetAccountIDByConnection(int connectionID)
+    {
+        return connectionToAccountID.First(x => x.Key == connectionID).Value;
     }
 }

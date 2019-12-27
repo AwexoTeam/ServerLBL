@@ -24,4 +24,5 @@ public class LoginAnswer : Packet
         EndWrite();
     }
     public override void Deserialize(BinaryReader reader) { }
+
 }

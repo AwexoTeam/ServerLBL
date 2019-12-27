@@ -68,6 +68,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Structure\Packets\Ingame\PlayerMovementRequest.cs" />
+    <Compile Include="Structure\Packets\Ingame\PlayerMovementUpdate.cs" />
+    <Compile Include="Structure\Packets\Ingame\PlayerSyncAnswer.cs" />
+    <Compile Include="Structure\Packets\Login\CharacterCreationAnswer.cs" />
+    <Compile Include="Structure\Packets\Login\CharacterCreationRequest.cs" />
+    <Compile Include="Structure\Packets\Ingame\PlayerSyncRequest.cs" />
     <Compile Include="XMLHandlers\ItemDatabase.cs" />
     <Compile Include="XMLHandlers\ServerData.cs" />
     <Compile Include="XMLHandlers\XmlInitializer.cs" />
@@ -78,19 +84,12 @@
     <Compile Include="MainCode\Database\GameStructures.cs" />
     <Compile Include="MainCode\MainServer.cs" />
     <Compile Include="Structure\Definations\Packet.cs" />
-    <Compile Include="Structure\Handlers\MessageHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structure\Definations\Player.cs" />
     <Compile Include="Structure\Handlers\EventHandler.cs" />
     <Compile Include="Structure\Definations\GameDefinations.cs" />
-    <Compile Include="Structure\Packets\Login\CharacterCreationAnswer.cs" />
-    <Compile Include="Structure\Packets\Login\CharacterCreationRequest.cs" />
     <Compile Include="Structure\Packets\Login\LoginAnswer.cs" />
     <Compile Include="Structure\Packets\Login\LoginRequest.cs" />
-    <Compile Include="Structure\Packets\Ingame\MovementRequest.cs" />
-    <Compile Include="Structure\Packets\Ingame\PositionUpdate.cs" />
-    <Compile Include="Structure\Packets\Ingame\StatUpdatePacket.cs" />
-    <Compile Include="Structure\Packets\Ingame\UmaCharacterPacket.cs" />
     <Compile Include="Structure\Handlers\PlayerHandler.cs" />
     <Compile Include="Structure\Handlers\TickHandler.cs" />
   </ItemGroup>

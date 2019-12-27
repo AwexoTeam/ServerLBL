@@ -517,33 +517,35 @@ namespace CharacterStructures
     {
         public int ownerID { get; set; }
         public int bodyType { get; set; }
-        public string pronouns { get; set; }
+        public string referalPronoun { get; set; }
+        public string genativPronoun { get; set; }
 
         public float height { get; set; }
         public float weight { get; set; }
 
         public override void Initialize(int id)
         {
-            StartReader(id);
+            StartReader(id,"ownerID");
             while (reader.Read())
             {
                 ownerID = (int)reader["ownerID"];
                 height = (float)reader["height"];
                 weight = (float)reader["weight"];
                 bodyType = (int)reader["bodyType"];
-                pronouns = (string)reader["pronouns"];
+                referalPronoun = (string)reader["referalPronoun"];
+                genativPronoun = (string)reader["genativPronoun"];
             }
             EndReader();
         }
 
         public override void Insert()
         {
-            Database.Insert(this, ownerID, bodyType, pronouns, height, weight);
+            Database.Insert(this, ownerID, bodyType, referalPronoun, genativPronoun, height, weight);
         }
 
         public override void Update(int packetID)
         {
-            Database.Update(this, id, ownerID, bodyType, pronouns, height, weight);
+            Database.Update(this, id, ownerID, bodyType, referalPronoun, genativPronoun, height, weight);
         }
     }
 }

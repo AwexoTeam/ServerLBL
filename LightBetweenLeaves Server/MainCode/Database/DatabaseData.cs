@@ -156,10 +156,10 @@ namespace DatabaseData
         
         public MySqlDataReader reader;
 
-        public void StartReader(int _id)
+        public void StartReader(int _id, string valName = "id")
         {
             id = _id;
-            StartReader("SELECT * FROM `" + GetType().Name + "` WHERE id = " + id);
+            StartReader("SELECT * FROM `" + GetType().Name + "` WHERE "+valName+" = " + id);
         }
         public void StartReader(string cmdStr)
         {

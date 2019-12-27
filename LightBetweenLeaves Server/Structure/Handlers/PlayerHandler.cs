@@ -14,8 +14,8 @@ public static class PlayerHandler
     
     //The time it takes if left unattented hunger reaches maxHungerDebuff in mms
     //End goal is 3600000 but will probably be lowered for testing.
-    public const int hungerMaxTime = 3600000;
-    public const float maxHungerDebuff = 30;
+    public static int hungerMaxTime = 30;
+    public static float maxHungerDebuff = 30;
     public static float hungerRate
     {
         get
@@ -48,9 +48,7 @@ public static class PlayerHandler
             account.Initialize(ids[i]);
             allPlayers.Add(new Player(account));
         }
-
-        EventHandler.OnPlayerLogin += PlayerConnected;
-        EventHandler.OnPlayerDisconnect += PlayerDisconnected;
+        
         EventHandler.OnGameTick += PlayerGameTick;
         EventHandler.OnLateTick += LateTickSavePlayers;
         EventHandler.OnServerTick += ServerTickAccountUpdate;
@@ -58,44 +56,30 @@ public static class PlayerHandler
         Debug.LogWithTime(LogLevel.Verbose, "Player Database Initialized");
     }
 
-    public static void HandleMovementRequest(int connectionID, MovementRequest packet)
+    public static void SendPositions()
     {
-        int accountID = GetAccountIdByConID(connectionID);
-        if(accountID > -1)
+        for (int i = 0; i < onlinePlayers.Count; i++)
         {
-            int index = onlinePlayers.FindIndex(x => x.id == accountID);
-            if(index > -1)
+            Player player = onlinePlayers[i];
+            
+            PlayerMovementUpdate movementUpdate = new PlayerMovementUpdate
             {
-                onlinePlayers[index].targetPosition = new Vector3(packet.x, packet.y, packet.z);
-                Player player = onlinePlayers[index];
+                characterID = player.id,
+                x = player.targetPosition.x,
+                y = player.targetPosition.y,
+                z = player.targetPosition.z,
+            };
 
-                PositionUpdate positionUpdate = new PositionUpdate(player);
-                positionUpdate.SendAll();
-            }
+
+            movementUpdate.Serialize();
+            movementUpdate.SendAll();
         }
     }
 
-    private static void PlayerConnected(EventArgs args)
+    public static void PlayerConnected(Account loggedInAccount)
     {
-        int connectionID = args.argInt;
-        int id = GetAccountIdByConID(connectionID);
-
-        if (id > -1) {
-            if (allPlayers.Exists(x => x.accountData.id == id))
-            {
-                Player loggedIn = allPlayers.Find(x => x.accountData.id == id);
-                onlinePlayers.Add(loggedIn);
-            }
-        }
-    }
-    private static void PlayerDisconnected(EventArgs args)
-    {
-        int connectionID = (int)args.args[0];
-        int accountID = (int)args.args[1];
-
-        Player player = onlinePlayers.Find(x => x.accountData.id == accountID);
-
-        onlinePlayers.Remove(player);
+        Player newPlayer = new Player(loggedInAccount);
+        onlinePlayers.Add(newPlayer);
     }
 
     private static void PlayerGameTick(EventArgs args)
@@ -106,11 +90,7 @@ public static class PlayerHandler
 
             player.accountData.hunger += hungerRate;
             //TODO: handle equipment durability loss here too :D
-
-            StatUpdatePacket packet = new StatUpdatePacket(player.accountData);
-            packet.Serialize();
-
-            packet.SendToPlayer(player.id);
+            //TODO: Send Stat Update to players.
         }
     }
     private static void ServerTickAccountUpdate(EventArgs args)

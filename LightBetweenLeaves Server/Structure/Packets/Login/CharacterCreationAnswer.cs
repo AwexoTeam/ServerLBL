@@ -1,24 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+public enum CharacterErrorCode
+{
+    Nothing,
+    NameTaken,
+    NameTooLong,
+    ProfaneName,
+    Other
+}
+
 public class CharacterCreationAnswer : Packet
 {
-    public bool canCreate;
-    public int errorCode;
+    public CharacterErrorCode errorCode;
 
-    public CharacterCreationAnswer() { type = PacketType.CharacterCreationAnswer; }
+    public CharacterCreationAnswer(CharacterErrorCode _errorCode)
+    {
+        type = PacketType.CharacterCreationAnswer;
+        errorCode = _errorCode;
+    }
 
     public override void Serialize()
     {
         BeginWrite();
-        writer.Write(canCreate);
-        writer.Write(errorCode);
+        writer.Write((int)errorCode);
         EndWrite();
     }
-
-    public override void Deserialize(BinaryReader reader) { }
 }

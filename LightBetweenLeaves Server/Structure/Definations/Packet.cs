@@ -4,22 +4,26 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Telepathy;
 
 public enum PacketType
 {
     Unknown,
+
     LoginRequest,
-    LoginAnswer,
     CharacterCreationRequest,
-    CharacterCreationAnswer,
-    MovementRequest,
-    PositionUpdate,
     PlayerSyncRequest,
+    PlayerMovementRequest,
+
+    LoginAnswer,
+    CharacterCreationAnswer,
+    PlayerSyncAnswer,
+    PlayerMovementUpdate,
+
     PlayerDisconnected,
-    UmaCharacterPacket,
 }
 
-public abstract class Packet
+public class Packet
 {
     public int id = -1;
     public PacketType type;
@@ -27,6 +31,12 @@ public abstract class Packet
     public BinaryWriter writer;
     
     private MemoryStream stream;
+    
+    public Packet() { }
+    public Packet(byte[] data)
+    {
+        buffer = data;
+    }
 
     public void BeginWrite()
     {
@@ -42,10 +52,12 @@ public abstract class Packet
         stream.Close();
     }
 
-    public abstract void Serialize();
-    public abstract void Deserialize(BinaryReader reader);
+    public virtual void Serialize() { }
+    public virtual void Deserialize(BinaryReader reader) { }
 
-    public void Send(int id)
+    public virtual void OnRecieve(Message msg) { }
+
+    public void Send(int id, bool isPlayerID = false)
     {
         MainServer.Send(id, this);
     }
@@ -53,17 +65,9 @@ public abstract class Packet
     {
         MainServer.SendAll(this);
     }
-    public void SendAllExcept(int id)
+    public void SendAllExcept(int id, bool isPlayerID = false)
     {
         MainServer.SendAllExpect(id, this);
     }
-
-    public void SendToPlayer(int accountID)
-    {
-        if (MainServer.connectionToAccountID.ContainsValue(accountID))
-        {
-            int id = MainServer.connectionToAccountID.FirstOrDefault(x => x.Value == accountID).Key;
-            Send(id);
-        }
-    }
+    
 }

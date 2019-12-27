@@ -55,7 +55,9 @@ public static class ServerData
                 monsterExpMultiplier = (float)serverData.Element("MONSTER_EXP");
                 productionExpMultiplier = (float)serverData.Element("PRODUCTION_EXP");
                 skillExpMultiplier = (float)serverData.Element("SKILL_EXP");
-                
+
+                PlayerHandler.hungerMaxTime = (int)serverData.Element("HungerMaxTime");
+                PlayerHandler.maxHungerDebuff = (float)serverData.Element("MaxHungerDebuff");
             }
         }
 

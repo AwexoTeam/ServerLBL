@@ -26,5 +26,6 @@
 	<SKILL_EXP>1</SKILL_EXP>
 	<!--Multipliers End-->
 	
-	
+	<HungerMaxTime>3600000</HungerMaxTime>
+	<MaxHungerDebuff>30</MaxHungerDebuff>
 </ServerData>

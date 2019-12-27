@@ -26,11 +26,6 @@ public static class Database
         updateCMD = new Dictionary<Type, string>();
         insertIntoCMD = new Dictionary<Type, string>();
 
-        //server = "remotemysql.com";
-        //username = "xwula2yOZ5";
-        //password = "Xh8SPcoG1K";
-        //database = "xwula2yOZ5";
-
         string conStr = "";
         conStr += "SERVER=" + server + ";";
         conStr += "DATABASE=" + database + ";";
@@ -49,8 +44,7 @@ public static class Database
         foreach (var table in tables)
         {
             string cmdStr = table.GetCreateCmd();
-            File.WriteAllText("cmd.txt", cmdStr);
-
+            
             using (MySqlCommand cmd = new MySqlCommand(cmdStr, connection))
             {
                 cmd.ExecuteNonQuery();
@@ -134,8 +128,7 @@ public static class Database
         if (insertIntoCMD.ContainsKey(table.GetType()))
         {
             string storedCmd = insertIntoCMD[table.GetType()];
-
-            File.WriteAllText("cmd.txt", storedCmd + "\n" + values.Length);
+            
             string cmdStr = string.Format(storedCmd, values);
 
             using (MySqlCommand cmd = new MySqlCommand(cmdStr, connection))
@@ -151,8 +144,7 @@ public static class Database
         {
             string storedCmd = updateCMD[table.GetType()];
             string cmdStr = string.Format(storedCmd, values);
-
-            File.WriteAllText("cmd.txt", cmdStr);
+            
             using (MySqlCommand cmd = new MySqlCommand(cmdStr))
             {
                 cmd.Connection = connection;
@@ -171,14 +163,14 @@ public static class Database
         Unknown,
     }
 
-    public static bool DoLoginCheck(int connectionId, LoginRequest request)
+    public static LoginAnswer DoLoginCheck(int connectionId, string _username, string _password)
     {
         bool hasCharacter = false;
         bool canLogin = false;
         LoginErrorCode errorCode = LoginErrorCode.Unknown;
         int characterID = -1;
 
-        string cmdStr = "SELECT * FROM `Account` WHERE username = '" + request.username + "'";
+        string cmdStr = "SELECT * FROM `Account` WHERE username = '" + _username + "'";
         using (MySqlCommand cmd = new MySqlCommand(cmdStr, connection))
         {
             using (MySqlDataReader reader = cmd.ExecuteReader())
@@ -187,7 +179,7 @@ public static class Database
                 {
                     while (reader.Read())
                     {
-                        canLogin = (string)reader["password"] == request.password;
+                        canLogin = (string)reader["password"] == _password;
                         if (canLogin)
                         {
                             characterID = (int)reader["id"];
@@ -198,33 +190,29 @@ public static class Database
                             EventArgs args = new EventArgs(GameEventType.OnPlayerLogin, hasCharacter);
                             EventHandler.InvokeEvent(args);
                         }
-                        else { errorCode = LoginErrorCode.WrongPassword; }
+                        else
+                        {
+                            errorCode = LoginErrorCode.WrongPassword;
+                        }
                     }
+                }
+                else
+                {
+                    errorCode = LoginErrorCode.InvalidName;
                 }
             }
         }
-        
-        if (!canLogin && errorCode != LoginErrorCode.WrongPassword)
+
+        if (!canLogin && errorCode == LoginErrorCode.InvalidName)
         {
-            Account account = new Account()
-            {
-                username = request.username,
-                password = request.password,
-            };
+            //TODO: base account stuff 
+            Account account = new Account();
+            account.username = _username;
+            account.password = _password;
 
             account.Insert();
         }
 
-        if (canLogin)
-        {
-            if (!MainServer.connectionToAccountID.ContainsKey(connectionId))
-            {
-                Debug.Log("testy");
-                MainServer.connectionToAccountID.Add(connectionId, characterID);
-            }
-            else { MainServer.connectionToAccountID[connectionId] = characterID; }
-        }
-        
         LoginAnswer answer = new LoginAnswer()
         {
             id = connectionId,
@@ -234,12 +222,9 @@ public static class Database
             characterID = characterID
         };
 
-        answer.Serialize();
-        answer.Send(connectionId);
-
-        return canLogin;
+        return answer;
     }
-
+    
     public static void ExecuteNonQuerry(string cmdStr)
     {
         using (MySqlCommand cmd = new MySqlCommand(cmdStr, connection))
