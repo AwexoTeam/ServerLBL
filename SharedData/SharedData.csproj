@@ -40,8 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Defination\EventHandler.cs" />
+    <Compile Include="Core\Defination\GameDefinations.cs" />
     <Compile Include="Core\Packet.cs" />
     <Compile Include="Core\PacketType.cs" />
+    <Compile Include="Core\Defination\TickHandler.cs" />
     <Compile Include="Utils\Debug.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

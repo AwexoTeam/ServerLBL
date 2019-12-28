@@ -7,8 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public static class PlayerHandler
+public class PlayerHandler : Initializable
 {
+    public int priority => 10;
+
     public static List<Player> allPlayers;
     public static List<Player> onlinePlayers;
     
@@ -25,7 +27,7 @@ public static class PlayerHandler
         }
     }
 
-    public static void Initialize()
+    public void Initialize()
     {
         allPlayers = new List<Player>();
         onlinePlayers = new List<Player>();

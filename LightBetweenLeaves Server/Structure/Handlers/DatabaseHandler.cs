@@ -1,4 +1,5 @@
 ﻿using CharacterStructures;
+using GameDefinations;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ public enum LoginErrorCode
     Unknown,
 }
 
-public static class DatabaseHandler
+public  class DatabaseHandler : Initializable
 {
     public static MySqlConnection connection => Database.connection;
 
@@ -24,14 +25,15 @@ public static class DatabaseHandler
     public static string server = "";
     public static string database;
 
-    public static void Initialize()
+    public int priority => 1;
+
+    public void Initialize()
     {
         Database.Initialize(server, database, username, password);
     }
 
     public static LoginAnswer DoLoginCheck(int connectionId, string _username, string _password)
     {
-        
         bool hasCharacter = false;
         bool canLogin = false;
         LoginErrorCode errorCode = LoginErrorCode.Unknown;

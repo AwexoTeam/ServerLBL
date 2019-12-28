@@ -51,4 +51,10 @@ namespace GameDefinations
         Dan_2,
         Dan_3,
     }
+
+    public interface Initializable
+    {
+        int priority { get;}
+        void Initialize();
+    }
 }

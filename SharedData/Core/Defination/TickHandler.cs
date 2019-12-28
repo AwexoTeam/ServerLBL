@@ -1,11 +1,12 @@
-﻿using System;
+﻿using GameDefinations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 
-public static class TickHandler
+public class TickHandler : Initializable
 {
     public static int GameTickInterval = 1000;
     public static int ServerTickInterval = 1000;
@@ -15,7 +16,9 @@ public static class TickHandler
     private static Timer ServerTick;
     private static Timer LateTick;
 
-    public static void Initialize()
+    public int priority => 2;
+
+    public void Initialize()
     {
         GameTick = new Timer(GameTickInterval);
         ServerTick = new Timer(ServerTickInterval);
@@ -48,4 +51,5 @@ public static class TickHandler
     {
         EventHandler.InvokeEvent(GameEventType.OnGameTick);
     }
+
 }

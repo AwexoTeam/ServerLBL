@@ -68,7 +68,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MainCode\MainServerEntry.cs" />
+    <Compile Include="MainCode\MainServerUtitls.cs" />
+    <Compile Include="Structure\Definations\Player.cs" />
     <Compile Include="Structure\Handlers\DatabaseHandler.cs" />
+    <Compile Include="Structure\Handlers\ModHandler.cs" />
     <Compile Include="Structure\Packets\Ingame\PlayerMovementRequest.cs" />
     <Compile Include="Structure\Packets\Ingame\PlayerMovementUpdate.cs" />
     <Compile Include="Structure\Packets\Ingame\PlayerSyncAnswer.cs" />
@@ -80,13 +84,9 @@
     <Compile Include="XMLHandlers\XmlInitializer.cs" />
     <Compile Include="MainCode\MainServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Structure\Definations\Player.cs" />
-    <Compile Include="Structure\Handlers\EventHandler.cs" />
-    <Compile Include="Structure\Definations\GameDefinations.cs" />
     <Compile Include="Structure\Packets\Login\LoginAnswer.cs" />
     <Compile Include="Structure\Packets\Login\LoginRequest.cs" />
     <Compile Include="Structure\Handlers\PlayerHandler.cs" />
-    <Compile Include="Structure\Handlers\TickHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Downloads\Mods\testy\telepathy\Telepathy\Telepathy.csproj">

@@ -18,7 +18,7 @@ public enum LogLevel
 public static class Debug
 {
     public static LogLevel level = LogLevel.Debug;
-
+    
     public static void Log(string text)
     {
         Log(LogLevel.Minimal, text, true);
@@ -43,7 +43,6 @@ public static class Debug
             Console.WriteLine(text);
         }
     }
-
     public static void LogWithTime(LogLevel logLevel, string text, bool isError = false)
     {
         if (logLevel <= level)
@@ -56,7 +55,6 @@ public static class Debug
             Log(logLevel, text, false, isError);
         }
     }
-
     public static void LogWithBacktrack(LogLevel logLevel, string text, bool isError = false)
     {
         if (logLevel <= level)
@@ -97,11 +95,22 @@ public static class Debug
         return rtn;
     }
 
+    #region Overload for objects log
+    public static void Log(object text) { Log(text.ToString()); }
+    public static void LogWithTime(LogLevel logLevel, object obj, bool isError = false)
+    {
+        LogWithTime(logLevel, obj.ToString(), isError);
+    }
+    public static void LogWithBacktrack(LogLevel logLevel, object obj, bool isError = false)
+    {
+        LogWithBacktrack(logLevel, obj.ToString(), isError);
+    }
+    #endregion
+    #region TelepathyLogs
     public static void TelepathyLog(string str)
     {
         LogWithTime(LogLevel.Minimal, str);
     }
-
     public static void TelepathyLogWarning(string str)
     {
         LogWithTime(LogLevel.Verbose, str);
@@ -110,4 +119,5 @@ public static class Debug
     {
         LogWithTime(LogLevel.Minimal, str, true);
     }
+    #endregion
 }

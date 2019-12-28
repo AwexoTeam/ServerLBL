@@ -1,0 +1,16 @@
+C:\Users\Melon\Documents\LBLMain\ServerLBL\ModExample\bin\Debug\ModExample.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\ModExample\bin\Debug\ModExample.pdb
+C:\Users\Melon\Documents\LBLMain\ServerLBL\ModExample\obj\Debug\ModExample.csprojAssemblyReference.cache
+C:\Users\Melon\Documents\LBLMain\ServerLBL\ModExample\obj\Debug\ModExample.csproj.CoreCompileInputs.cache
+C:\Users\Melon\Documents\LBLMain\ServerLBL\ModExample\obj\Debug\ModExample.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\ModExample\obj\Debug\ModExample.pdb
+C:\Users\Melon\Documents\LBLMain\ServerLBL\ModExample\bin\Debug\DatabaseServer.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\ModExample\bin\Debug\SharedData.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\ModExample\bin\Debug\MySql.Data.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\ModExample\bin\Debug\Telepathy.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\ModExample\bin\Debug\netstandard.dll
+C:\Users\Melon\Documents\LBLMain\ServerLBL\ModExample\bin\Debug\DatabaseServer.pdb
+C:\Users\Melon\Documents\LBLMain\ServerLBL\ModExample\bin\Debug\SharedData.pdb
+C:\Users\Melon\Documents\LBLMain\ServerLBL\ModExample\bin\Debug\MySql.Data.xml
+C:\Users\Melon\Documents\LBLMain\ServerLBL\ModExample\bin\Debug\Telepathy.pdb
+C:\Users\Melon\Documents\LBLMain\ServerLBL\ModExample\obj\Debug\ModExample.csproj.CopyComplete
