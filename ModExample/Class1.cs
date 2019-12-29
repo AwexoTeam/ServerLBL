@@ -9,7 +9,7 @@ namespace ModExample
 {
     public class Test : Initializable
     {
-        public int priority { get => 100;}
+        public int priority { get => 100; }
 
         public void Initialize()
         {

@@ -16,7 +16,7 @@ public enum CharacterErrorCode
 public class CharacterCreationAnswer : Packet
 {
     public CharacterErrorCode errorCode;
-
+    public CharacterCreationAnswer() { type = PacketType.CharacterCreationAnswer; }
     public CharacterCreationAnswer(CharacterErrorCode _errorCode)
     {
         type = PacketType.CharacterCreationAnswer;

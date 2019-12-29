@@ -18,17 +18,16 @@ public class PlayerSyncRequest : Packet
 
         PlayerHandler.PlayerConnected(account);
 
-        //TODO: send out our players.
         for (int i = 0; i < PlayerHandler.onlinePlayers.Count; i++)
         {
             Player currPlayer = PlayerHandler.onlinePlayers[i];
 
             Account playerAcc = new Account();
             UmaData data = new UmaData();
-            
+
             playerAcc.Initialize(currPlayer.id);
             data.Initialize(currPlayer.id);
-            
+
             PlayerSyncAnswer playerSync = new PlayerSyncAnswer
             {
                 name = playerAcc.name,
@@ -50,5 +49,32 @@ public class PlayerSyncRequest : Packet
             playerSync.Serialize();
             MainServer.Send(msg.connectionId, playerSync);
         }
+
+        //TODO: send the new players to everyone else.
+        Player player = PlayerHandler.onlinePlayers.Find(p => p.id == accountID);
+        UmaData umaData = new UmaData();
+        umaData.Initialize(accountID);
+
+        PlayerSyncAnswer newPlayerSync = new PlayerSyncAnswer
+        {
+            name = player.accountData.name,
+            genativPronoun = umaData.genativPronoun,
+            referalPronoun = umaData.referalPronoun,
+
+            bodyType = umaData.bodyType,
+
+            height = umaData.height,
+            weight = umaData.weight,
+
+            targetX = player.targetPosition.x,
+            targetY = player.targetPosition.y,
+            targetZ = player.targetPosition.z,
+
+            characterID = player.id
+        };
+
+        newPlayerSync.Serialize();
+
+        MainServer.SendAllExpect(msg.connectionId, newPlayerSync);
     }
 }

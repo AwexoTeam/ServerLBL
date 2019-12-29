@@ -21,7 +21,10 @@ public static partial class MainServer
     private static void StopServer() { }
 
     private static void ConnectionHandler(Message msg) { }
-    private static void DisconnectionHandler(Message msg) { }
+    private static void DisconnectionHandler(Message msg)
+    {
+        connectionToAccountID.Remove(msg.connectionId);
+    }
 
     public static void Send(int sendTo, Packet packet)
     {

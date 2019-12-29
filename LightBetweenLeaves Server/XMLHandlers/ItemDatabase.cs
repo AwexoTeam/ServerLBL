@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -15,8 +16,9 @@ public static class ItemDatabase
     public static void Initialized()
     {
         itemDatabase = new List<ItemData>();
-        
-        XmlReader reader = XmlReader.Create("Data/DB/ItemDB.xml");
+        string fullPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        fullPath += "/Data/DB/ItemDB.xml";
+        XmlReader reader = XmlReader.Create(fullPath);
         
     }
 }

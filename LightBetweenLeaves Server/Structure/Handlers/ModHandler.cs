@@ -34,6 +34,20 @@ public static partial class ModHandler
         InitializeAssembly(assemblies.ToArray());
     }
 
+    public static void LoadPackets()
+    {
+        Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        var types = assemblies
+            .SelectMany(s => s.GetTypes())
+            .Where(t => t.IsSubclassOf(typeof(Packet)));
+
+        foreach (var type in types)
+        {
+            Packet packet = (Packet)Activator.CreateInstance(type);
+            MainServer.packets.Add(packet.type, packet);
+        }
+    }
+
     public static bool ImplementsInterface(this Type type, Type interfaceType)
     {
         return type.GetInterfaces().Contains(interfaceType);

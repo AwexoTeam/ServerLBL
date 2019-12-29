@@ -116,6 +116,7 @@ public static class Database
     //Insert into database based of the table reference.
     public static void Insert(DatabaseTable table, params object[] values)
     {
+        
         if (insertIntoCMD.ContainsKey(table.GetType()))
         {
             string storedCmd = insertIntoCMD[table.GetType()];
@@ -127,6 +128,7 @@ public static class Database
                 cmd.ExecuteNonQuery();
             }
         }
+        else { Debug.Log(LogLevel.Default,"Could not find insert cmd of " + table.GetType().Name, true, true); }
     }
 
     //Update the database based of the table reference.
@@ -143,7 +145,7 @@ public static class Database
                 cmd.ExecuteNonQuery();
             }
         }
-        else { Debug.Log("Could not find update cmd"); }
+        else { Debug.Log(LogLevel.Default,"Could not find update cmd of " + table.GetType().Name, true, true); }
     }
     
     //Execute command on mysql.

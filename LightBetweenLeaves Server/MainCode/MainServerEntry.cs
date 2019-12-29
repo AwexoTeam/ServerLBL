@@ -11,14 +11,16 @@ public static partial class MainServer
     private static MemoryStream stream;
     private static BinaryReader reader;
 
-    private static Dictionary<PacketType, Packet> packets;
+    public static Dictionary<PacketType, Packet> packets;
 
     static void Main(string[] args)
     {
         Initialize();
         ModHandler.Initialize();
-        
+        ModHandler.LoadPackets();
         StartServer();
+
+        MessageLoop();
     }
 
     public static void Initialize()
@@ -31,6 +33,7 @@ public static partial class MainServer
         reader = new BinaryReader(stream);
 
         connectionToAccountID = new Dictionary<int, int>();
+        packets = new Dictionary<PacketType, Packet>();
     }
     public static void MessageLoop()
     {
@@ -63,42 +66,14 @@ public static partial class MainServer
         PacketType type = (PacketType)reader.ReadInt32();
         int id = reader.ReadInt32();
 
-        Packet packet = GetPacketClassByType(type);
-
-        packet.Deserialize(reader);
-        packet.OnRecieve(msg);
-
-        if (type != PacketType.PlayerMovementRequest)
-            Debug.LogWithTime(LogLevel.Debug, "R: " + type + ", ID:" + msg.connectionId);
-
-    }
-
-    public static Packet GetPacketClassByType(PacketType type)
-    {
-        Packet packet = new Packet();
-
-        switch (type)
+        if (packets.ContainsKey(type))
         {
-            case PacketType.LoginRequest:
-                packet = new LoginRequest();
-                break;
+            Packet packet = packets[type];
+            packet.Deserialize(reader);
+            packet.OnRecieve(msg);
 
-            case PacketType.CharacterCreationRequest:
-                packet = new CharacterCreationRequest();
-                break;
-
-            case PacketType.PlayerSyncRequest:
-                packet = new PlayerSyncRequest();
-                break;
-
-            case PacketType.PlayerMovementRequest:
-                packet = new PlayerMovementRequest();
-                break;
-
-            default:
-                break;
+            if (type != PacketType.PlayerMovementRequest)
+                Debug.LogWithTime(LogLevel.Debug, "R: " + type + ", ID:" + msg.connectionId);
         }
-
-        return packet;
     }
 }

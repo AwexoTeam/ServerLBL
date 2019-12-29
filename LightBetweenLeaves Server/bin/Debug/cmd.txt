@@ -1,4 +1,2 @@
-UPDATE Account
- SET 
-name = 'owo',username = 'uwu',password = 'uwu',sceneID = 0,lastLogin = '',x = 0,y = 0,z = 0,totalLevel = 0,level = 0,exp = 0,alive = False,coin = 0,hp = 0,mp = 0,sp = 0,wound = 0,hunger = 0,exhaustion = 0,strength = 0,intellegence = 0,dexterity = 0,willpower = 0,luck = 0,lastRebirth = '',rebirthAge = 0,rebirthAmount = 0 WHERE
- id = 2;
+INSERT INTO UmaData(ownerID,bodyType,referalPronoun,genativPronoun,height,weight)
+VALUES({0},{1},'{2}','{3}',{4},{5})

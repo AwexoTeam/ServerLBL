@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -24,7 +26,9 @@ public static class ServerData
 
     public static void Initialize()
     {
-        XmlReader reader = XmlReader.Create("Data/Options/ServerData.xml");
+        string fullPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        fullPath += "/Data/Options/ServerData.xml";
+        XmlReader reader = XmlReader.Create(fullPath);
 
         while (!reader.EOF)
         {
